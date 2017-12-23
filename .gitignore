@@ -9,3 +9,5 @@
 .externalNativeBuild
 /.idea
 .idea
+/app/src/main/res/audio
+.idea/
