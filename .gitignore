@@ -8,6 +8,7 @@
 /captures
 .externalNativeBuild
 /.idea
-.idea
+.idea/
 /app/src/main/res/audio
 .idea/
+app/src/main/res/raw
