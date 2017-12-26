@@ -28,40 +28,22 @@ public class TrackTemplate {
     private int part1Resource;
     private int part2Resource;
 
-    public TrackTemplate(String name, int part1Resource, int part2Resource, String part1FileName, String part2FileName, Context context) {
+    public TrackTemplate(String name, int part1Resource, int part2Resource) {
 
         this.name = name;
-        this.part1FileName = part1FileName;
         this.part1Resource = part1Resource;
-        this.part2Resource = part2Resource;
-        // this.part1MediaPlayer = new MediaPlayer();
 
         try {
-//            this.part1MediaPlayer.setDataSource("/app/src/main/res/raw" + File.separator + part1FileName);
-//            this.part1MediaPlayer.prepare();
-//            this.part1Duration = part1MediaPlayer.getDuration();
-
             if (part2FileName != null) {
-                this.part2FileName = part2FileName;
-//                this.part2MediaPlayer = new MediaPlayer();
-//                this.part2MediaPlayer.setDataSource("/app/src/main/res/raw" + File.separator + part2FileName);
-//                this.part2MediaPlayer.prepare();
-//                this.part2Duration = part2MediaPlayer.getDuration();
-//                this.minimumDuration = this.part1Duration + this.part2Duration;
+                this.part2Resource = part2Resource;
                 this.isMultiPart = true;
             } else {
-//                this.minimumDuration = this.part1Duration;
                 this.isMultiPart = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
-//    public int getMinimumDuration() {
-//        return minimumDuration;
-//    }
 
     public boolean isMultiPart() {
         return isMultiPart;
@@ -75,11 +57,4 @@ public class TrackTemplate {
         return part2Resource;
     }
 
-//    public int getPart1Duration() {
-//        return part1Duration;
-//    }
-//
-//    public int getPart2Duration() {
-//        return part2Duration;
-//    }
 }

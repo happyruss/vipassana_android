@@ -1,7 +1,7 @@
 package com.guidedmeditationtreks.vipassana.models;
 
 /**
- * Created by czar on 12/23/17.
+ * Created by aerozero on 12/23/17.
  */
 
 public interface TrackDelegate {
