@@ -7,7 +7,4 @@
 /build
 /captures
 .externalNativeBuild
-.idea/
-misc.xml
-/app/src/main/res/audio
 app/src/main/res/raw
