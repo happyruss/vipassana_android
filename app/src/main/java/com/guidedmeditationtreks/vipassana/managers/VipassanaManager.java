@@ -37,17 +37,24 @@ public class VipassanaManager {
         this.user.setCustomMeditationDurationMinutes(savedCustomMeditationDurationMinutes);
     }
 
-    public void playTrackAtLevel(int trackLevel, int gapDuration) {
+    public void initTrackAtLevel(int trackLevel) {
 
         if (this.activeTrack != null) {
             this.activeTrack.stop();
             this.activeTrack = null;
             this.activeTrackLevel = 0;
         }
-
         this.activeTrackLevel = trackLevel;
         TrackTemplate trackTemplate = trackTemplateFactory.trackTemplates[trackLevel];
-        this.activeTrack = new Track(this.delegate, trackTemplate, gapDuration, this.context);
+        this.activeTrack = new Track(this.delegate, trackTemplate, this.context);
+    }
+
+    public boolean isMultiPart() {
+        return activeTrack.isMultiPart();
+    }
+
+    public void playTrackFromBeginning(int gapDuration) {
+        activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
     }
 
@@ -80,4 +87,11 @@ public class VipassanaManager {
         this.user.setCustomMeditationDurationMinutes(durationMinutes);
     }
 
+    public int getMinimumDuration() {
+        return activeTrack.getMinimumDuration();
+    }
+
+    public int getUserCompletedTrackLevel(){
+        return user.getCompletedTrackLevel();
+    }
 }

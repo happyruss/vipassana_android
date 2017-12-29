@@ -21,13 +21,14 @@ public class Track {
 
     private int part1Duration;
     private int part2Duration;
+    private int minimumDuration;
     private int totalDuration;
 
     private MediaPlayer playerPart2;
 
     private TrackDelegate delegate;
 
-    public Track(TrackDelegate delegate, TrackTemplate trackTemplate, int gapDuration, Context context) {
+    public Track(TrackDelegate delegate, TrackTemplate trackTemplate, Context context) {
 
         this.trackTemplate = trackTemplate;
         this.delegate = delegate;
@@ -40,13 +41,31 @@ public class Track {
 
         if (this.trackTemplate.isMultiPart()) {
             this.playerPart2 = MediaPlayer.create(context, trackTemplate.getPart2Resource());
-            this.gapDuration = gapDuration;
             this.part2Duration = this.playerPart2.getDuration();
+            this.minimumDuration = this.part1Duration + this.part2Duration;
+        } else {
+            this.minimumDuration = this.part1Duration;
+        }
+        this.totalDuration = this.minimumDuration;
+        this.remainingTime = this.totalDuration;
+    }
+
+    public boolean isMultiPart() {
+        return this.trackTemplate.isMultiPart();
+    }
+
+    public void setGapDuration(int gapDuration) {
+        this.gapDuration = gapDuration;
+        if (this.trackTemplate.isMultiPart()) {
             this.totalDuration = this.gapDuration + this.part1Duration + this.part2Duration;
         } else {
             this.totalDuration = this.part1Duration;
         }
         this.remainingTime = this.totalDuration;
+    }
+
+    public int getMinimumDuration() {
+        return minimumDuration;
     }
 
     private void createTimer(int seconds) {
