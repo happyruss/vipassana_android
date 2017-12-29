@@ -7,5 +7,4 @@
 /build
 /captures
 .externalNativeBuild
-/.idea
-.idea
+app/src/main/res/raw

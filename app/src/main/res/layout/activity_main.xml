@@ -6,13 +6,36 @@
     android:layout_height="match_parent"
     tools:context="com.guidedmeditationtreks.vipassana.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="14dp"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <Button
+            android:id="@+id/introButton"
+            android:tag="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Introduction"
+            android:onClick="didTapMeditationButton"
+            android:gravity="center"
+            />
+
+        <ToggleButton
+            android:id="@+id/playPauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Play"
+            android:textOff="Pause"
+            android:onClick="didTapPlayPause"
+            android:gravity="center"
+            />
+
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
