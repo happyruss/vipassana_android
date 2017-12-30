@@ -54,6 +54,7 @@ public class VipassanaManager {
     }
 
     public void playTrackFromBeginning(int gapDuration) {
+        stop();
         activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
     }

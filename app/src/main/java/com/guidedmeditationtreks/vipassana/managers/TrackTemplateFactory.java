@@ -17,7 +17,7 @@ public class TrackTemplateFactory {
 
     public TrackTemplateFactory() {
 
-        trackTemplates = new TrackTemplate[10];
+        trackTemplates = new TrackTemplate[11];
 
         trackTemplates[0] = new TrackTemplate("Introduction", R.raw.introduction, 0);
 
@@ -38,6 +38,8 @@ public class TrackTemplateFactory {
         trackTemplates[8] = new TrackTemplate(  "In The Moment Vispassana", R.raw.inthemoment, R.raw.inthemoment2);
 
         trackTemplates[9] = new TrackTemplate( "Metta", R.raw.metapana, 0);
+
+        trackTemplates[10] = new TrackTemplate( "Silent Meditation", R.raw.bellstarting, R.raw.bellclosing);
 
     }
 

@@ -37,11 +37,11 @@ public class Track {
         this.playerPart1 = MediaPlayer.create(context, trackTemplate.getPart1Resource());
         //playerPart1.start(); // no need to call prepare(); create() does that for you
 
-        this.part1Duration = this.playerPart1.getDuration();
+        this.part1Duration = this.playerPart1.getDuration() / 1000;
 
         if (this.trackTemplate.isMultiPart()) {
             this.playerPart2 = MediaPlayer.create(context, trackTemplate.getPart2Resource());
-            this.part2Duration = this.playerPart2.getDuration();
+            this.part2Duration = this.playerPart2.getDuration() / 1000;
             this.minimumDuration = this.part1Duration + this.part2Duration;
         } else {
             this.minimumDuration = this.part1Duration;
@@ -70,7 +70,8 @@ public class Track {
 
     private void createTimer(int seconds) {
 
-        timer = new CountDownTimer(seconds, 1000) {
+        int milliseconds = seconds * 1000;
+        timer = new CountDownTimer(milliseconds, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 remainingTime--;
@@ -83,7 +84,7 @@ public class Track {
                 }
 
                 if(remainingTime > 0 && trackTemplate.isMultiPart()) {
-                    if (remainingTime < (part2Duration + 1)) {
+                    if (remainingTime < part2Duration) {
                         if(!playerPart2.isPlaying()) {
                             playerPart2.start();
                         }
@@ -92,6 +93,7 @@ public class Track {
             }
 
             public void onFinish() {
+                delegate.trackTimeRemainingUpdated(0);
                 delegate.trackEnded();
             }
 
