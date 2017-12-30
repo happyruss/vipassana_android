@@ -13,7 +13,7 @@ public class TrackTemplateFactory {
 
     public static TrackTemplateFactory shared = new TrackTemplateFactory();
 
-    public TrackTemplate[] trackTemplates;
+    private TrackTemplate[] trackTemplates;
 
     public TrackTemplateFactory() {
 
@@ -43,7 +43,7 @@ public class TrackTemplateFactory {
 
     }
 
-    public TrackTemplate[] getTrackTemplates() {
-        return trackTemplates;
+    public TrackTemplate getTrackTemplate(int index) {
+        return trackTemplates[index];
     }
 }

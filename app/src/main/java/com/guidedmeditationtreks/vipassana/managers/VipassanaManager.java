@@ -38,14 +38,9 @@ public class VipassanaManager {
     }
 
     public void initTrackAtLevel(int trackLevel) {
-
-        if (this.activeTrack != null) {
-            this.activeTrack.stop();
-            this.activeTrack = null;
-            this.activeTrackLevel = 0;
-        }
+        this.clearCurrentTrack();
         this.activeTrackLevel = trackLevel;
-        TrackTemplate trackTemplate = trackTemplateFactory.trackTemplates[trackLevel];
+        TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(trackLevel);
         this.activeTrack = new Track(this.delegate, trackTemplate, this.context);
     }
 
@@ -54,8 +49,7 @@ public class VipassanaManager {
     }
 
     public void playTrackFromBeginning(int gapDuration) {
-        stop();
-        activeTrack.setGapDuration(gapDuration);
+        this.activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
     }
 
@@ -65,10 +59,11 @@ public class VipassanaManager {
         }
     }
 
-    public void stop() {
+    public void clearCurrentTrack() {
         if (activeTrack != null) {
             activeTrack.stop();
             activeTrack = null;
+            activeTrackLevel = 0;
         }
     }
 
