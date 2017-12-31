@@ -125,13 +125,20 @@ public class Track {
     }
 
     public void stop() {
-        this.remainingTime = this.totalDuration;
-        this.isPaused = false;
-        this.playerPart1.stop();
-        if (this.trackTemplate.isMultiPart()) {
-            this.playerPart2.stop();
+//        this.remainingTime = this.totalDuration;
+//        this.isPaused = false;
+        if (playerPart1.isPlaying()) {
+            this.playerPart1.stop();
         }
-        timer.cancel();
+        if (this.trackTemplate.isMultiPart()) {
+            if (playerPart2.isPlaying()) {
+                this.playerPart2.stop();
+            }
+        }
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     public void pauseOrResume() {

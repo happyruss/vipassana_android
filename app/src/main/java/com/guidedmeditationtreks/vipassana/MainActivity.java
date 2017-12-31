@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
     }
 
     private void presentCountdownLengthAlertOrRun(int trackLevel) {
+
         vipassanaManager.initTrackAtLevel(trackLevel);
         int minDurationSeconds = vipassanaManager.getMinimumDuration();
         int minDurationMinutes = minDurationSeconds / 60 + 2;
@@ -113,7 +114,9 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
             this.runMeditationWithGap(0);
             isInMeditation = true;
         } else {
-            //present the popup
+            //present the popup to determine gap amount
+            this.runMeditationWithGap(0);
+            isInMeditation = true;
 
 
         }
