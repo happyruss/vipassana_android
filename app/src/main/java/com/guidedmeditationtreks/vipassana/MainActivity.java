@@ -1,5 +1,7 @@
 package com.guidedmeditationtreks.vipassana;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
 
     public  void didTapMeditationButton(View v) {
         int trackLevel = Integer.parseInt((String)v.getTag());
-        presentCountdownLengthAlertOrRun(trackLevel);
+        presentAlerts(trackLevel);
     }
 
     public void didTapPlayPause(View v) {
@@ -104,6 +106,30 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         playPauseButton.setVisibility(View.VISIBLE);
     }
 
+    private void presentAlerts(final int trackLevel) {
+        if (isInMeditation) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("Meditation Underway");
+            alertDialogBuilder
+                    .setMessage("Would you like to stop the current session?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            presentCountdownLengthAlertOrRun(trackLevel);
+                        }
+                    })
+                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+            presentCountdownLengthAlertOrRun(trackLevel);
+        }
+    }
+
     private void presentCountdownLengthAlertOrRun(int trackLevel) {
 
         vipassanaManager.initTrackAtLevel(trackLevel);
@@ -115,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
             isInMeditation = true;
         } else {
             //present the popup to determine gap amount
+
+
             this.runMeditationWithGap(0);
             isInMeditation = true;
 
