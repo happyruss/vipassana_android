@@ -13,11 +13,11 @@ public class TrackTemplateFactory {
 
     public static TrackTemplateFactory shared = new TrackTemplateFactory();
 
-    public TrackTemplate[] trackTemplates;
+    private TrackTemplate[] trackTemplates;
 
     public TrackTemplateFactory() {
 
-        trackTemplates = new TrackTemplate[10];
+        trackTemplates = new TrackTemplate[11];
 
         trackTemplates[0] = new TrackTemplate("Introduction", R.raw.introduction, 0);
 
@@ -39,9 +39,11 @@ public class TrackTemplateFactory {
 
         trackTemplates[9] = new TrackTemplate( "Metta", R.raw.metapana, 0);
 
+        trackTemplates[10] = new TrackTemplate( "Silent Meditation", R.raw.bellstarting, R.raw.bellclosing);
+
     }
 
-    public TrackTemplate[] getTrackTemplates() {
-        return trackTemplates;
+    public TrackTemplate getTrackTemplate(int index) {
+        return trackTemplates[index];
     }
 }

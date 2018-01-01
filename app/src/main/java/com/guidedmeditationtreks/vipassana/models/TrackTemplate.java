@@ -14,15 +14,6 @@ import java.io.File;
 public class TrackTemplate {
 
     private String name;
-    private String part1FileName;
-    private MediaPlayer part1MediaPlayer;
-    private int part1Duration;
-
-    private String part2FileName;
-    private MediaPlayer part2MediaPlayer;
-    private int part2Duration;
-
-    private int minimumDuration;
     private boolean isMultiPart;
 
     private int part1Resource;
@@ -34,7 +25,7 @@ public class TrackTemplate {
         this.part1Resource = part1Resource;
 
         try {
-            if (part2FileName != null) {
+            if (part2Resource != 0) {
                 this.part2Resource = part2Resource;
                 this.isMultiPart = true;
             } else {
