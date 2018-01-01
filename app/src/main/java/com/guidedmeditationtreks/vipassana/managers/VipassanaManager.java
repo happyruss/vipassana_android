@@ -85,6 +85,10 @@ public class VipassanaManager {
         this.user.setCustomMeditationDurationMinutes(durationMinutes);
     }
 
+    public int getDefaultDurationMinutes() {
+        return settings.getInt("savedCustomMeditationDurationMinutes", 0);
+    }
+
     public int getMinimumDuration() {
         return activeTrack.getMinimumDuration();
     }
