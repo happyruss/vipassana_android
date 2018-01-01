@@ -68,11 +68,13 @@ public class VipassanaManager {
     }
 
     public void userCompletedTrack() {
-        if (this.activeTrackLevel > this.user.getCompletedTrackLevel()) {
-            this.user.setCompletedTrackLevel(this.activeTrackLevel);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("savedCompletedLevel", this.activeTrackLevel);
-            editor.commit();
+        if (this.activeTrackLevel != 10) { //ignore the bell
+            if (this.activeTrackLevel > this.user.getCompletedTrackLevel()) {
+                this.user.setCompletedTrackLevel(this.activeTrackLevel);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("savedCompletedLevel", this.activeTrackLevel);
+                editor.commit();
+            }
         }
     }
 
