@@ -31,14 +31,22 @@
             android:layout_height="wrap_content"
             android:text="Custom Time" />
 
-        <TextView
+        <EditText
             android:id="@+id/userInput"
-            android:layout_width="150px"
+            android:layout_width="75px"
             android:layout_height="wrap_content"
-            android:inputType="text">
+            android:inputType="number"
+            android:selectAllOnFocus="true">
+        </EditText>
 
-            <requestFocus />
-        </TextView>
+        <TextView
+            android:id="@+id/customLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="minutes"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
 
     </LinearLayout>
 

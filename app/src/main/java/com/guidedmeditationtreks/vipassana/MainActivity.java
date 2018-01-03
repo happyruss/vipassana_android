@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -174,21 +175,18 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
             });
 
             final Button btnCustom = promptView.findViewById(R.id.btnCustom);
-            final TextView userInput = promptView.findViewById(R.id.userInput);
+            final EditText userInput = promptView.findViewById(R.id.userInput);
             int customValue = vipassanaManager.getDefaultDurationMinutes();
             if (customValue < minDurationMinutes) {
                 customValue = minDurationMinutes;
             }
 
-            //TODO: Get this working so user can change it
-
             userInput.setText(String.format("%d", customValue));
-
             btnCustom.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Integer userValue;
                     try {
-                        userValue = Integer.parseInt(btnCustom.getText().toString());
+                        userValue = Integer.parseInt(userInput.getText().toString());
                     } catch (NumberFormatException ex) {
                         presentInvalidCustomCountdownAlert(trackLevel, minDurationMinutes);
                         return;
