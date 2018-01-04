@@ -35,7 +35,7 @@
 
         <Button
             android:id="@+id/introButton"
-            android:tag="0"
+            android:tag="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Introduction"
@@ -55,7 +55,7 @@
 
         <Button
             android:id="@+id/silentTimerButton"
-            android:tag="10"
+            android:tag="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Silent Meditation"
@@ -67,7 +67,7 @@
 
         <Button
             android:id="@+id/shamathaButton"
-            android:tag="1"
+            android:tag="2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Shamatha"
@@ -77,7 +77,7 @@
 
         <Button
             android:id="@+id/anapanaButton"
-            android:tag="2"
+            android:tag="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Anapana"
@@ -87,7 +87,7 @@
 
         <Button
             android:id="@+id/focusedAnapanaButton"
-            android:tag="3"
+            android:tag="4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Focused Anapana"
@@ -97,7 +97,7 @@
 
         <Button
             android:id="@+id/vipassanaButton"
-            android:tag="4"
+            android:tag="5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vipassana"
@@ -107,7 +107,7 @@
 
         <Button
             android:id="@+id/scanningVipassanaButton"
-            android:tag="5"
+            android:tag="6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Scanning Vipassana"
@@ -117,7 +117,7 @@
 
         <Button
             android:id="@+id/symmetricalVipassanaButton"
-            android:tag="6"
+            android:tag="7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Symmetrical Vipassana"
@@ -127,7 +127,7 @@
 
         <Button
             android:id="@+id/sweepingVipassanButton"
-            android:tag="7"
+            android:tag="8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sweeping Vipassana"
@@ -137,7 +137,7 @@
 
         <Button
             android:id="@+id/inTheMomentVipassanaButton"
-            android:tag="8"
+            android:tag="9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="In the Moment Vipassana"
@@ -147,10 +147,10 @@
 
         <Button
             android:id="@+id/mettaButton"
-            android:tag="9"
+            android:tag="10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Metta"
+            android:text="Mettā"
             android:onClick="didTapMeditationButton"
             android:gravity="center"
             />

@@ -53,15 +53,15 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         int enabledLevel = vipassanaManager.getUserCompletedTrackLevel() + 1;
         introButton.setEnabled(true);
         timerButton.setEnabled(true);
-        shamathaButton.setEnabled(enabledLevel >= 1);
-        anapanaButton.setEnabled( enabledLevel >= 2);
-        focusedAnapanaButton.setEnabled( enabledLevel >= 3);
-        topToBottomVipassanaButton.setEnabled( enabledLevel >= 4);
-        scanningVipassanaButton.setEnabled( enabledLevel >= 5);
-        symmetricalVipassanaButton.setEnabled( enabledLevel >= 6);
-        sweepingVipassanaButton.setEnabled( enabledLevel >= 7);
-        inTheMomentVipassanaButton.setEnabled( enabledLevel >= 8);
-        mettaButton.setEnabled(enabledLevel >= 9);
+        shamathaButton.setEnabled(enabledLevel > 1);
+        anapanaButton.setEnabled( enabledLevel > 2);
+        focusedAnapanaButton.setEnabled( enabledLevel > 3);
+        topToBottomVipassanaButton.setEnabled( enabledLevel > 4);
+        scanningVipassanaButton.setEnabled( enabledLevel > 5);
+        symmetricalVipassanaButton.setEnabled( enabledLevel > 6);
+        sweepingVipassanaButton.setEnabled( enabledLevel > 7);
+        inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
+        mettaButton.setEnabled(enabledLevel > 9);
     }
 
     private void connectView() {

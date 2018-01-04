@@ -68,13 +68,11 @@ public class VipassanaManager {
     }
 
     public void userCompletedTrack() {
-        if (this.activeTrackLevel != 10) { //ignore the bell
-            if (this.activeTrackLevel > this.user.getCompletedTrackLevel()) {
-                this.user.setCompletedTrackLevel(this.activeTrackLevel);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("savedCompletedLevel", this.activeTrackLevel);
-                editor.commit();
-            }
+        if (this.activeTrackLevel > this.user.getCompletedTrackLevel()) {
+            this.user.setCompletedTrackLevel(this.activeTrackLevel);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("savedCompletedLevel", this.activeTrackLevel);
+            editor.commit();
         }
     }
 
@@ -86,7 +84,7 @@ public class VipassanaManager {
     }
 
     public int getDefaultDurationMinutes() {
-        return settings.getInt("savedCustomMeditationDurationMinutes", 0);
+        return user.getCustomMeditationDurationMinutes();
     }
 
     public int getMinimumDuration() {
