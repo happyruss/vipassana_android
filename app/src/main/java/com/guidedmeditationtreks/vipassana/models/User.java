@@ -9,10 +9,6 @@ public class User {
     private int completedTrackLevel;
     private int customMeditationDurationMinutes;
 
-    public boolean isAllowedToAccessLevel(int requestedLevel) {
-        return requestedLevel <= this.completedTrackLevel + 1;
-    }
-
     public int getCompletedTrackLevel() {
         return completedTrackLevel;
     }
