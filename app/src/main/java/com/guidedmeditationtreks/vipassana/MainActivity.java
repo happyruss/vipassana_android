@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "VipassanaPrefs";
@@ -73,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         connectView();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         vipassanaManager.setSettings(settings);
-        vipassanaManager.setContext(this);
         this.secureButtons();
     }
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void presentCountdownLengthAlertOrRun(final int trackLevel) {
 
-        vipassanaManager.initTrackAtLevel(trackLevel);
+        vipassanaManager.initTrackAtLevel(trackLevel, this);
         int minDurationSeconds = vipassanaManager.getMinimumDuration();
         final int minDurationMinutes = minDurationSeconds / 60 + 2;
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog alertD = new AlertDialog.Builder(this).create();
 
             Button btnMinimum = promptView.findViewById(R.id.btnMinimum);
-            btnMinimum.setText(String.format("%d minutes", minDurationMinutes));
+            btnMinimum.setText(String.format(Locale.getDefault(),"%d minutes", minDurationMinutes));
 
             Button btnHour = promptView.findViewById(R.id.btnHour);
 
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 customValue = minDurationMinutes;
             }
 
-            userInput.setText(String.format("%d", customValue));
+            userInput.setText(String.format(Locale.getDefault(),"%d", customValue));
             btnCustom.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Integer userValue;
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         presentInvalidCustomCountdownAlert(trackLevel, minDurationMinutes);
                         return;
                     }
-                    if (userValue.intValue() < minDurationMinutes) {
+                    if (userValue < minDurationMinutes) {
                         presentInvalidCustomCountdownAlert(trackLevel, minDurationMinutes);
                     } else {
                         vipassanaManager.setDefaultDurationMinutes(userValue);
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void presentInvalidCustomCountdownAlert(int trackLevel, int minDurationMinutes) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        String minAlertString = String.format("Length for this meditation must be at least %d minutes", minDurationMinutes);
+        String minAlertString = String.format(Locale.getDefault(), "Length for this meditation must be at least %d minutes", minDurationMinutes);
 
         alertDialogBuilder.setTitle("Invalid Custom Time");
         alertDialogBuilder

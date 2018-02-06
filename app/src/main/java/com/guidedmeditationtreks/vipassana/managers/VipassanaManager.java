@@ -10,27 +10,27 @@ import com.guidedmeditationtreks.vipassana.models.User;
 
 /**
  * Created by czar on 12/22/17.
+ * Manages the vipassana tasks
  */
 
 public class VipassanaManager {
 
     public static VipassanaManager singleton = new VipassanaManager();
     private SharedPreferences settings;
-    private Context context;
     private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;
 
-    public VipassanaManager() {
+    private VipassanaManager() {
         this.user = new User();
     }
 
-    public void initTrackAtLevel(int trackLevel) {
+    public void initTrackAtLevel(int trackLevel, Context context) {
         this.clearCurrentTrack();
         this.activeTrackLevel = trackLevel;
         TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(trackLevel);
-        this.activeTrack = new Track(trackTemplate, this.context);
+        this.activeTrack = new Track(trackTemplate, context);
     }
 
     public boolean isMultiPart() {
@@ -61,14 +61,14 @@ public class VipassanaManager {
             this.user.setCompletedTrackLevel(this.activeTrackLevel);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("savedCompletedLevel", this.activeTrackLevel);
-            editor.commit();
+            editor.apply();
         }
     }
 
     public void setDefaultDurationMinutes(int durationMinutes) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("savedCustomMeditationDurationMinutes", durationMinutes);
-        editor.commit();
+        editor.apply();
         this.user.setCustomMeditationDurationMinutes(durationMinutes);
     }
 
@@ -94,11 +94,9 @@ public class VipassanaManager {
     }
 
     public void setDelegate(TrackDelegate delegate) {
-        this.activeTrack.setDelegate(delegate);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
+        if (this.activeTrack != null) {
+            this.activeTrack.setDelegate(delegate);
+        }
     }
 
     public String getActiveTrackName() {

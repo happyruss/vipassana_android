@@ -13,6 +13,8 @@ import android.widget.ToggleButton;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
 
+import java.util.Locale;
+
 public class MeditationActivity extends AppCompatActivity implements TrackDelegate {
 
     private ToggleButton playPauseButton;
@@ -34,7 +36,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     }
 
     private void closeActivity() {
-        vipassanaManager.setDelegate(null);
+        vipassanaManager.clearCurrentTrack();
         finish();
     }
 
@@ -76,7 +78,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
 
     @Override
     public void trackTimeRemainingUpdated(int timeRemaining) {
-        String timeRemainingString = String.format("%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
+        String timeRemainingString = String.format(Locale.getDefault(), "%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
         timerTextView.setText(timeRemainingString);
     }
 
