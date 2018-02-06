@@ -15,19 +15,12 @@ import com.guidedmeditationtreks.vipassana.models.User;
 public class VipassanaManager {
 
     public static VipassanaManager singleton = new VipassanaManager();
-
-    //Get set by the Meditation Activity
     private SharedPreferences settings;
-    private TrackDelegate delegate;
     private Context context;
-
-
     private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
-
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;
-
 
     public VipassanaManager() {
         this.user = new User();
@@ -37,7 +30,7 @@ public class VipassanaManager {
         this.clearCurrentTrack();
         this.activeTrackLevel = trackLevel;
         TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(trackLevel);
-        this.activeTrack = new Track(this.delegate, trackTemplate, this.context);
+        this.activeTrack = new Track(trackTemplate, this.context);
     }
 
     public boolean isMultiPart() {
@@ -101,7 +94,7 @@ public class VipassanaManager {
     }
 
     public void setDelegate(TrackDelegate delegate) {
-        this.delegate = delegate;
+        this.activeTrack.setDelegate(delegate);
     }
 
     public void setContext(Context context) {

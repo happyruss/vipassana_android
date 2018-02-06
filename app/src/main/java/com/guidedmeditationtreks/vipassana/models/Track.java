@@ -28,10 +28,10 @@ public class Track {
 
     private TrackDelegate delegate;
 
-    public Track(TrackDelegate delegate, TrackTemplate trackTemplate, Context context) {
+
+    public Track(TrackTemplate trackTemplate, Context context) {
 
         this.trackTemplate = trackTemplate;
-        this.delegate = delegate;
 
         //initialize the audio files
         this.playerPart1 = MediaPlayer.create(context, trackTemplate.getPart1Resource());
@@ -151,6 +151,10 @@ public class Track {
 
     public String getName() {
         return trackTemplate.getName();
+    }
+
+    public void setDelegate(TrackDelegate delegate) {
+        this.delegate = delegate;
     }
 
 }
