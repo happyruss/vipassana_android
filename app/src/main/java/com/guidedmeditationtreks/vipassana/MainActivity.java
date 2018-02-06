@@ -2,7 +2,7 @@ package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,23 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
-import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
 
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
-
-public class MainActivity extends AppCompatActivity implements TrackDelegate {
+public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "VipassanaPrefs";
-    private VipassanaManager vipassanaManager;
+    public VipassanaManager vipassanaManager = VipassanaManager.singleton;
 
     private Button introButton;
-    private ToggleButton playPauseButton;
-    private TextView timerTextView;
     private Button timerButton;
     private Button shamathaButton;
     private Button anapanaButton;
@@ -37,16 +28,11 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
     private Button sweepingVipassanaButton;
     private Button inTheMomentVipassanaButton;
     private Button mettaButton;
-
-    private boolean isInMeditation = false;
+    private TextView meditationTotalTimeTextView;
 
     public  void didTapMeditationButton(View v) {
         int trackLevel = Integer.parseInt((String)v.getTag());
         presentAlerts(trackLevel);
-    }
-
-    public void didTapPlayPause(View v) {
-        vipassanaManager.pauseOrResume();
     }
 
     private void secureButtons() {
@@ -65,9 +51,6 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
     }
 
     private void connectView() {
-        playPauseButton = findViewById(R.id.playPauseButton);
-        playPauseButton.setVisibility(View.INVISIBLE);
-        timerTextView = findViewById(R.id.timerTextView);
         introButton = findViewById(R.id.introButton);
         shamathaButton = findViewById(R.id.shamathaButton);
         anapanaButton = findViewById(R.id.anapanaButton);
@@ -79,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
         mettaButton = findViewById(R.id.mettaButton);
         timerButton = findViewById(R.id.silentTimerButton);
+        meditationTotalTimeTextView = findViewById(R.id.meditationTotalTimeTextView);
     }
 
     @Override
@@ -86,59 +70,11 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectView();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        vipassanaManager = new VipassanaManager(this, this, settings);
         this.secureButtons();
     }
 
-    @Override
-    public void trackTimeRemainingUpdated(int timeRemaining) {
-        String timeRemainingString = String.format("%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
-        timerTextView.setText(timeRemainingString);
-    }
-
-    @Override
-    public void trackEnded() {
-        vipassanaManager.userCompletedTrack();
-        playPauseButton.setVisibility(View.INVISIBLE);
-        isInMeditation = false;
-        secureButtons();
-    }
-
-    private void runMeditationWithGap(int gapAmount) {
-        isInMeditation = true;
-        vipassanaManager.playTrackFromBeginning(gapAmount);
-        playPauseButton.setVisibility(View.VISIBLE);
-    }
-
-    private void runMeditationWithFullLength(int fullLengthSeconds) {
-        int minDurationSeconds = vipassanaManager.getMinimumDuration();
-        int gapLength = fullLengthSeconds - minDurationSeconds;
-        runMeditationWithGap(gapLength);
-    }
-
     private void presentAlerts(final int trackLevel) {
-        if (isInMeditation) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Meditation Underway");
-            alertDialogBuilder
-                    .setMessage("Would you like to stop the current session?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            presentCountdownLengthAlertOrRun(trackLevel);
-                        }
-                    })
-                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else {
-            presentCountdownLengthAlertOrRun(trackLevel);
-        }
+        presentCountdownLengthAlertOrRun(trackLevel);
     }
 
     private void presentCountdownLengthAlertOrRun(final int trackLevel) {
@@ -150,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         if (!vipassanaManager.isMultiPart()) {
             this.runMeditationWithGap(0);
         } else {
-
             LayoutInflater layoutInflater = LayoutInflater.from(this);
             View promptView = layoutInflater.inflate(R.layout.prompt, null);
             final AlertDialog alertD = new AlertDialog.Builder(this).create();
@@ -162,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
 
             btnMinimum.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    runMeditationWithFullLength(minDurationMinutes * 60);
-                    alertD.dismiss();
+                runMeditationWithFullLength(minDurationMinutes * 60);
+                alertD.dismiss();
                 }
             });
 
@@ -221,5 +156,18 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private void runMeditationWithGap(int gapAmount) {
+        Intent myIntent = new Intent(MainActivity.this, MeditationActivity.class);
+        myIntent.putExtra("gapAmount", gapAmount);
+        MainActivity.this.startActivity(myIntent);
+    }
+
+    private void runMeditationWithFullLength(int fullLengthSeconds) {
+        int minDurationSeconds = vipassanaManager.getMinimumDuration();
+        int gapLength = fullLengthSeconds - minDurationSeconds;
+        runMeditationWithGap(gapLength);
+    }
+
 
 }

@@ -149,4 +149,8 @@ public class Track {
         }
     }
 
+    public String getName() {
+        return trackTemplate.getName();
+    }
+
 }

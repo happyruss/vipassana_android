@@ -48,4 +48,6 @@ public class TrackTemplate {
         return part2Resource;
     }
 
+    public String getName() { return name; }
+
 }

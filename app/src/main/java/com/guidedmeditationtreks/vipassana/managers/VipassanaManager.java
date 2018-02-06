@@ -14,20 +14,22 @@ import com.guidedmeditationtreks.vipassana.models.User;
 
 public class VipassanaManager {
 
-    private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
+    public static VipassanaManager singleton = new VipassanaManager();
+
+    //Get set by the Meditation Activity
+    private SharedPreferences settings;
     private TrackDelegate delegate;
     private Context context;
+
+
+    private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
 
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;
 
-    private SharedPreferences settings;
 
-    public VipassanaManager(TrackDelegate delegate, Context context, SharedPreferences settings) {
-        this.delegate = delegate;
-        this.context = context;
-        this.settings = settings;
+    public VipassanaManager() {
         this.user = new User();
 
         int savedCompletedLevel = settings.getInt("savedCompletedLevel", 0);
@@ -48,7 +50,7 @@ public class VipassanaManager {
         return activeTrack.isMultiPart();
     }
 
-    public void playTrackFromBeginning(int gapDuration) {
+    public void playActiveTrackFromBeginning(int gapDuration) {
         this.activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
     }
@@ -94,4 +96,24 @@ public class VipassanaManager {
     public int getUserCompletedTrackLevel(){
         return user.getCompletedTrackLevel();
     }
+
+    public void setSettings(SharedPreferences settings) {
+        this.settings = settings;
+    }
+
+    public void setDelegate(TrackDelegate delegate) {
+        this.delegate = delegate;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public String getActiveTrackName() {
+        if (activeTrack == null) {
+            return null;
+        }
+        return activeTrack.getName();
+    }
+
 }
