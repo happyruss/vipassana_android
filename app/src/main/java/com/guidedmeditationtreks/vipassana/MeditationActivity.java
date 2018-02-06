@@ -18,7 +18,6 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     private ToggleButton playPauseButton;
     private TextView timerTextView;
     private TextView meditationNameTextView;
-    public static final String PREFS_NAME = "VipassanaPrefs";
     private boolean isInMeditation = false;
     private VipassanaManager vipassanaManager = VipassanaManager.singleton;
 
@@ -26,10 +25,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meditation);
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         vipassanaManager.setDelegate(this);
-        vipassanaManager.setSettings(settings);
-        vipassanaManager.setContext(this);
         connectView();
         Intent intent = getIntent();
         int gapAmount =  intent.getIntExtra("gapAmount", 0);
@@ -39,8 +35,6 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
 
     private void closeActivity() {
         vipassanaManager.setDelegate(null);
-        vipassanaManager.setSettings(null);
-        vipassanaManager.setContext(null);
         finish();
     }
 

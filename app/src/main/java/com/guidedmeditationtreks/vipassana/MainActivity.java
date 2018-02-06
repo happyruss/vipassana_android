@@ -3,6 +3,7 @@ package com.guidedmeditationtreks.vipassana;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectView();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        vipassanaManager.setSettings(settings);
+        vipassanaManager.setContext(this);
         this.secureButtons();
     }
 

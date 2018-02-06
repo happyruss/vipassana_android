@@ -31,12 +31,6 @@ public class VipassanaManager {
 
     public VipassanaManager() {
         this.user = new User();
-
-        int savedCompletedLevel = settings.getInt("savedCompletedLevel", 0);
-        this.user.setCompletedTrackLevel(savedCompletedLevel);
-
-        int savedCustomMeditationDurationMinutes = settings.getInt("savedCustomMeditationDurationMinutes", 0);
-        this.user.setCustomMeditationDurationMinutes(savedCustomMeditationDurationMinutes);
     }
 
     public void initTrackAtLevel(int trackLevel) {
@@ -99,6 +93,11 @@ public class VipassanaManager {
 
     public void setSettings(SharedPreferences settings) {
         this.settings = settings;
+        int savedCompletedLevel = settings.getInt("savedCompletedLevel", 0);
+        this.user.setCompletedTrackLevel(savedCompletedLevel);
+
+        int savedCustomMeditationDurationMinutes = settings.getInt("savedCustomMeditationDurationMinutes", 0);
+        this.user.setCustomMeditationDurationMinutes(savedCustomMeditationDurationMinutes);
     }
 
     public void setDelegate(TrackDelegate delegate) {
