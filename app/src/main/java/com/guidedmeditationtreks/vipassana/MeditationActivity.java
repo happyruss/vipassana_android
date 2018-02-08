@@ -40,7 +40,9 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         finish();
     }
 
-    public  void didTapBackButton(View v) {
+    @Override
+    public void onBackPressed()
+    {
         if (isInMeditation) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Meditation Underway");
@@ -62,6 +64,10 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         } else {
             closeActivity();
         }
+    }
+
+    public void didTapBackButton(View v) {
+        this.onBackPressed();
     }
 
     private void connectView() {

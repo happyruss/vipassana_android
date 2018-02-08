@@ -162,10 +162,22 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private static final int MEDITATION_ACTIVITY_REQUEST_CODE = 0xe110;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MEDITATION_ACTIVITY_REQUEST_CODE)
+            secureButtons();
+    }
+
     private void runMeditationWithGap(int gapAmount) {
         Intent myIntent = new Intent(MainActivity.this, MeditationActivity.class);
         myIntent.putExtra("gapAmount", gapAmount);
-        MainActivity.this.startActivity(myIntent);
+//        MainActivity.this.startActivity(myIntent);
+        startActivityForResult(myIntent, MEDITATION_ACTIVITY_REQUEST_CODE);
     }
 
     private void runMeditationWithFullLength(int fullLengthSeconds) {
