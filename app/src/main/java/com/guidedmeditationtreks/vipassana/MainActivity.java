@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         sweepingVipassanaButton.setEnabled( enabledLevel > 7);
         inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
         mettaButton.setEnabled(enabledLevel > 9);
+
+        int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
+        String meditationTimeLabelText = medHours == 1 ? String.format("%d hour spent meditating", medHours) : String.format("%d hours spent meditating", medHours);
+        meditationTotalTimeTextView.setText(meditationTimeLabelText);
     }
 
     private void connectView() {
