@@ -1,6 +1,7 @@
 package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 
 import java.util.Locale;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mettaButton.setEnabled(enabledLevel > 9);
 
         int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
-        String meditationTimeLabelText = medHours == 1 ? String.format("%d hour spent meditating", medHours) : String.format("%d hours spent meditating", medHours);
+        String meditationTimeLabelText = medHours == 1 ? String.format(Locale.getDefault(), "%d hour spent meditating", medHours) : String.format(Locale.getDefault(),"%d hours spent meditating", medHours);
         meditationTotalTimeTextView.setText(meditationTimeLabelText);
     }
 
@@ -73,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         vipassanaManager.setSettings(settings);
         this.secureButtons();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     private void presentAlerts(final int trackLevel) {

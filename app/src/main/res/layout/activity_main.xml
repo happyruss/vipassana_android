@@ -132,6 +132,7 @@
             android:layout_height="wrap_content"
             android:text="Total time spent in meditation"
             android:gravity="center"
+            fontPath="fonts/font-diner-coffee-service.otf"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
