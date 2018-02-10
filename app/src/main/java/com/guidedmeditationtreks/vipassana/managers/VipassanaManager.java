@@ -10,45 +10,34 @@ import com.guidedmeditationtreks.vipassana.models.User;
 
 /**
  * Created by czar on 12/22/17.
+ * Manages the vipassana tasks
  */
 
 public class VipassanaManager {
 
+    public static VipassanaManager singleton = new VipassanaManager();
+    private SharedPreferences settings;
     private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
-    private TrackDelegate delegate;
-    private Context context;
-
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;
 
-    private SharedPreferences settings;
-
-    public VipassanaManager(TrackDelegate delegate, Context context, SharedPreferences settings) {
-        this.delegate = delegate;
-        this.context = context;
-        this.settings = settings;
+    private VipassanaManager() {
         this.user = new User();
-
-        int savedCompletedLevel = settings.getInt("savedCompletedLevel", 0);
-        this.user.setCompletedTrackLevel(savedCompletedLevel);
-
-        int savedCustomMeditationDurationMinutes = settings.getInt("savedCustomMeditationDurationMinutes", 0);
-        this.user.setCustomMeditationDurationMinutes(savedCustomMeditationDurationMinutes);
     }
 
-    public void initTrackAtLevel(int trackLevel) {
+    public void initTrackAtLevel(int trackLevel, Context context) {
         this.clearCurrentTrack();
         this.activeTrackLevel = trackLevel;
         TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(trackLevel);
-        this.activeTrack = new Track(this.delegate, trackTemplate, this.context);
+        this.activeTrack = new Track(trackTemplate, context);
     }
 
     public boolean isMultiPart() {
         return activeTrack.isMultiPart();
     }
 
-    public void playTrackFromBeginning(int gapDuration) {
+    public void playActiveTrackFromBeginning(int gapDuration) {
         this.activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
     }
@@ -72,14 +61,14 @@ public class VipassanaManager {
             this.user.setCompletedTrackLevel(this.activeTrackLevel);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("savedCompletedLevel", this.activeTrackLevel);
-            editor.commit();
+            editor.apply();
         }
     }
 
     public void setDefaultDurationMinutes(int durationMinutes) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("savedCustomMeditationDurationMinutes", durationMinutes);
-        editor.commit();
+        editor.apply();
         this.user.setCustomMeditationDurationMinutes(durationMinutes);
     }
 
@@ -94,4 +83,40 @@ public class VipassanaManager {
     public int getUserCompletedTrackLevel(){
         return user.getCompletedTrackLevel();
     }
+
+    public int getUserTotalSecondsInMeditation(){
+        return user.getTotalSecondsInMeditation();
+    }
+
+    public void setSettings(SharedPreferences settings) {
+        this.settings = settings;
+        int savedCompletedLevel = settings.getInt("savedCompletedLevel", 0);
+        this.user.setCompletedTrackLevel(savedCompletedLevel);
+
+        int savedCustomMeditationDurationMinutes = settings.getInt("savedCustomMeditationDurationMinutes", 0);
+        this.user.setCustomMeditationDurationMinutes(savedCustomMeditationDurationMinutes);
+        int totalSecondsInMeditation = settings.getInt("totalSecondsInMeditation", 0);
+        this.user.setTotalSecondsInMeditation(totalSecondsInMeditation);
+    }
+
+    public void incrementTotalSecondsInMeditation() {
+        this.user.setTotalSecondsInMeditation(this.user.getTotalSecondsInMeditation() + 1);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("totalSecondsInMeditation", this.user.getTotalSecondsInMeditation());
+        editor.apply();
+    }
+
+    public void setDelegate(TrackDelegate delegate) {
+        if (this.activeTrack != null) {
+            this.activeTrack.setDelegate(delegate);
+        }
+    }
+
+    public String getActiveTrackName() {
+        if (activeTrack == null) {
+            return null;
+        }
+        return activeTrack.getName();
+    }
+
 }

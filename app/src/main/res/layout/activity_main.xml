@@ -15,44 +15,6 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <TextView
-            android:id="@+id/timerTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-        <Button
-            android:id="@+id/introButton"
-            android:tag="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Introduction"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
-
-        <ToggleButton
-            android:id="@+id/playPauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOn="Play"
-            android:textOff="Pause"
-            android:onClick="didTapPlayPause"
-            android:gravity="center"
-            />
-
         <Button
             android:id="@+id/silentTimerButton"
             android:tag="0"
@@ -63,7 +25,16 @@
             android:gravity="center"
             />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/introButton"
+                android:tag="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Introduction"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+            />
+
 
         <Button
             android:id="@+id/shamathaButton"
@@ -154,6 +125,14 @@
             android:onClick="didTapMeditationButton"
             android:gravity="center"
             />
+
+        <TextView
+            android:id="@+id/meditationTotalTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total time spent in meditation"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
     </LinearLayout>

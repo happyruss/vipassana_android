@@ -8,6 +8,7 @@ public class User {
 
     private int completedTrackLevel;
     private int customMeditationDurationMinutes;
+    private int totalSecondsInMeditation;
 
     public int getCompletedTrackLevel() {
         return completedTrackLevel;
@@ -26,4 +27,11 @@ public class User {
     }
 
 
+    public int getTotalSecondsInMeditation() {
+        return totalSecondsInMeditation;
+    }
+
+    public void setTotalSecondsInMeditation(int totalSecondsInMeditation) {
+        this.totalSecondsInMeditation = totalSecondsInMeditation;
+    }
 }

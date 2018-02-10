@@ -2,6 +2,7 @@ package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,23 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
-import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
 
-import org.w3c.dom.Text;
+import java.util.Locale;
 
-import java.text.ParseException;
-
-public class MainActivity extends AppCompatActivity implements TrackDelegate {
+public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "VipassanaPrefs";
-    private VipassanaManager vipassanaManager;
+    public VipassanaManager vipassanaManager = VipassanaManager.singleton;
 
     private Button introButton;
-    private ToggleButton playPauseButton;
-    private TextView timerTextView;
     private Button timerButton;
     private Button shamathaButton;
     private Button anapanaButton;
@@ -37,16 +31,11 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
     private Button sweepingVipassanaButton;
     private Button inTheMomentVipassanaButton;
     private Button mettaButton;
-
-    private boolean isInMeditation = false;
+    private TextView meditationTotalTimeTextView;
 
     public  void didTapMeditationButton(View v) {
         int trackLevel = Integer.parseInt((String)v.getTag());
         presentAlerts(trackLevel);
-    }
-
-    public void didTapPlayPause(View v) {
-        vipassanaManager.pauseOrResume();
     }
 
     private void secureButtons() {
@@ -62,12 +51,13 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         sweepingVipassanaButton.setEnabled( enabledLevel > 7);
         inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
         mettaButton.setEnabled(enabledLevel > 9);
+
+        int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
+        String meditationTimeLabelText = medHours == 1 ? String.format("%d hour spent meditating", medHours) : String.format("%d hours spent meditating", medHours);
+        meditationTotalTimeTextView.setText(meditationTimeLabelText);
     }
 
     private void connectView() {
-        playPauseButton = findViewById(R.id.playPauseButton);
-        playPauseButton.setVisibility(View.INVISIBLE);
-        timerTextView = findViewById(R.id.timerTextView);
         introButton = findViewById(R.id.introButton);
         shamathaButton = findViewById(R.id.shamathaButton);
         anapanaButton = findViewById(R.id.anapanaButton);
@@ -79,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
         mettaButton = findViewById(R.id.mettaButton);
         timerButton = findViewById(R.id.silentTimerButton);
+        meditationTotalTimeTextView = findViewById(R.id.meditationTotalTimeTextView);
     }
 
     @Override
@@ -87,83 +78,36 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         setContentView(R.layout.activity_main);
         connectView();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        vipassanaManager = new VipassanaManager(this, this, settings);
+        vipassanaManager.setSettings(settings);
         this.secureButtons();
     }
 
-    @Override
-    public void trackTimeRemainingUpdated(int timeRemaining) {
-        String timeRemainingString = String.format("%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
-        timerTextView.setText(timeRemainingString);
-    }
-
-    @Override
-    public void trackEnded() {
-        vipassanaManager.userCompletedTrack();
-        playPauseButton.setVisibility(View.INVISIBLE);
-        isInMeditation = false;
-        secureButtons();
-    }
-
-    private void runMeditationWithGap(int gapAmount) {
-        isInMeditation = true;
-        vipassanaManager.playTrackFromBeginning(gapAmount);
-        playPauseButton.setVisibility(View.VISIBLE);
-    }
-
-    private void runMeditationWithFullLength(int fullLengthSeconds) {
-        int minDurationSeconds = vipassanaManager.getMinimumDuration();
-        int gapLength = fullLengthSeconds - minDurationSeconds;
-        runMeditationWithGap(gapLength);
-    }
-
     private void presentAlerts(final int trackLevel) {
-        if (isInMeditation) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Meditation Underway");
-            alertDialogBuilder
-                    .setMessage("Would you like to stop the current session?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            presentCountdownLengthAlertOrRun(trackLevel);
-                        }
-                    })
-                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else {
-            presentCountdownLengthAlertOrRun(trackLevel);
-        }
+        presentCountdownLengthAlertOrRun(trackLevel);
     }
 
     private void presentCountdownLengthAlertOrRun(final int trackLevel) {
 
-        vipassanaManager.initTrackAtLevel(trackLevel);
+        vipassanaManager.initTrackAtLevel(trackLevel, this);
         int minDurationSeconds = vipassanaManager.getMinimumDuration();
         final int minDurationMinutes = minDurationSeconds / 60 + 2;
 
         if (!vipassanaManager.isMultiPart()) {
             this.runMeditationWithGap(0);
         } else {
-
             LayoutInflater layoutInflater = LayoutInflater.from(this);
             View promptView = layoutInflater.inflate(R.layout.prompt, null);
             final AlertDialog alertD = new AlertDialog.Builder(this).create();
 
             Button btnMinimum = promptView.findViewById(R.id.btnMinimum);
-            btnMinimum.setText(String.format("%d minutes", minDurationMinutes));
+            btnMinimum.setText(String.format(Locale.getDefault(),"%d minutes", minDurationMinutes));
 
             Button btnHour = promptView.findViewById(R.id.btnHour);
 
             btnMinimum.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    runMeditationWithFullLength(minDurationMinutes * 60);
-                    alertD.dismiss();
+                runMeditationWithFullLength(minDurationMinutes * 60);
+                alertD.dismiss();
                 }
             });
 
@@ -181,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
                 customValue = minDurationMinutes;
             }
 
-            userInput.setText(String.format("%d", customValue));
+            userInput.setText(String.format(Locale.getDefault(),"%d", customValue));
             btnCustom.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Integer userValue;
@@ -191,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
                         presentInvalidCustomCountdownAlert(trackLevel, minDurationMinutes);
                         return;
                     }
-                    if (userValue.intValue() < minDurationMinutes) {
+                    if (userValue < minDurationMinutes) {
                         presentInvalidCustomCountdownAlert(trackLevel, minDurationMinutes);
                     } else {
                         vipassanaManager.setDefaultDurationMinutes(userValue);
@@ -207,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
 
     private void presentInvalidCustomCountdownAlert(int trackLevel, int minDurationMinutes) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        String minAlertString = String.format("Length for this meditation must be at least %d minutes", minDurationMinutes);
+        String minAlertString = String.format(Locale.getDefault(), "Length for this meditation must be at least %d minutes", minDurationMinutes);
 
         alertDialogBuilder.setTitle("Invalid Custom Time");
         alertDialogBuilder
@@ -221,5 +165,30 @@ public class MainActivity extends AppCompatActivity implements TrackDelegate {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private static final int MEDITATION_ACTIVITY_REQUEST_CODE = 0xe110;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MEDITATION_ACTIVITY_REQUEST_CODE)
+            secureButtons();
+    }
+
+    private void runMeditationWithGap(int gapAmount) {
+        Intent myIntent = new Intent(MainActivity.this, MeditationActivity.class);
+        myIntent.putExtra("gapAmount", gapAmount);
+//        MainActivity.this.startActivity(myIntent);
+        startActivityForResult(myIntent, MEDITATION_ACTIVITY_REQUEST_CODE);
+    }
+
+    private void runMeditationWithFullLength(int fullLengthSeconds) {
+        int minDurationSeconds = vipassanaManager.getMinimumDuration();
+        int gapLength = fullLengthSeconds - minDurationSeconds;
+        runMeditationWithGap(gapLength);
+    }
+
 
 }
