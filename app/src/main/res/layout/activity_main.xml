@@ -15,6 +15,16 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
+        <TextView
+            android:id="@+id/meditationTotalTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total time spent in meditation"
+            android:gravity="center"
+            fontPath="fonts/font-diner-coffee-service.otf"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+
         <Button
             android:id="@+id/silentTimerButton"
             android:tag="0"
@@ -125,15 +135,6 @@
             android:onClick="didTapMeditationButton"
             android:gravity="center"
             />
-
-        <TextView
-            android:id="@+id/meditationTotalTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total time spent in meditation"
-            android:gravity="center"
-            fontPath="fonts/font-diner-coffee-service.otf"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
     </LinearLayout>
