@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,53 +8,111 @@
     android:layout_height="match_parent"
     tools:context="com.guidedmeditationtreks.vipassana.MeditationActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/background"
+        android:scaleType="centerCrop"
+        />
+
+    <ImageView
+        android:id="@+id/buddha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/buddha"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/meditationNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/meditation_name_placeholder"
         android:gravity="center"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:textSize="34sp"
+        android:textColor="@color/colorTitle"
+        android:shadowColor="@color/colorShadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        fontPath="fonts/font-diner-coffee-service.otf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-        <Button
-            android:id="@+id/backButton"
-            android:tag="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:onClick="didTapBackButton"
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="center"
+        android:onClick="didTapBackButton"
+        android:src="@mipmap/back"
+        android:tag="0"
+        android:text="Back"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="20dp" />
+
+
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ffffff"
+        fontPath="fonts/font-diner-coffee-service.otf"
+        app:layout_constraintLeft_toRightOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="@id/backButton"
+        />
+
+
+    <ToggleButton
+        android:id="@+id/playPauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn=""
+        android:textOff=""
+        android:onClick="didTapPlayPause"
+        android:gravity="center"
+        android:background="@drawable/button_custom"
+        app:layout_constraintTop_toBottomOf="@id/meditationNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        
+        />
+
+
+    <!--
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
             android:gravity="center"
-            />
-
-        <TextView
-            android:id="@+id/meditationNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Meditation Name"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-        <ToggleButton
-            android:id="@+id/playPauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOn="Play"
-            android:textOff="Pause"
-            android:onClick="didTapPlayPause"
-            android:gravity="center"
-            />
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
 
-        <TextView
-            android:id="@+id/timerTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0:00"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
-    </LinearLayout>
 
+            <TextView
+                android:id="@+id/timerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+
+        </LinearLayout>
+    -->
 </android.support.constraint.ConstraintLayout>
