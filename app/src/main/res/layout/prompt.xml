@@ -14,10 +14,16 @@
         android:text="" />
 
     <Button
+        android:id="@+id/btnFortyFive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="45 Minutes" />
+
+    <Button
         android:id="@+id/btnHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="60 Minutes" />
+        android:text="60 Minutes (recommended)" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -36,7 +42,8 @@
             android:layout_width="75px"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:selectAllOnFocus="true">
+            android:selectAllOnFocus="true"
+            android:imeOptions="actionDone">
         </EditText>
 
         <TextView

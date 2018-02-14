@@ -1,19 +1,26 @@
 package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 
 import java.util.Locale;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mettaButton.setEnabled(enabledLevel > 9);
 
         int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
-        String meditationTimeLabelText = medHours == 1 ? String.format("%d hour spent meditating", medHours) : String.format("%d hours spent meditating", medHours);
+        String meditationTimeLabelText = medHours == 1 ? String.format(Locale.getDefault(), "%d hour spent meditating", medHours) : String.format(Locale.getDefault(),"%d hours spent meditating", medHours);
         meditationTotalTimeTextView.setText(meditationTimeLabelText);
     }
 
@@ -73,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         vipassanaManager.setSettings(settings);
         this.secureButtons();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     private void presentAlerts(final int trackLevel) {
@@ -100,9 +117,10 @@ public class MainActivity extends AppCompatActivity {
             final AlertDialog alertD = new AlertDialog.Builder(this).create();
 
             Button btnMinimum = promptView.findViewById(R.id.btnMinimum);
-            btnMinimum.setText(String.format(Locale.getDefault(),"%d minutes", minDurationMinutes));
+            btnMinimum.setText(String.format(Locale.getDefault(),"%d minutes (minimum)", minDurationMinutes));
 
             Button btnHour = promptView.findViewById(R.id.btnHour);
+            Button btnFortyFive = promptView.findViewById(R.id.btnFortyFive);
 
             btnMinimum.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -118,14 +136,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            btnFortyFive.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    runMeditationWithFullLength(45 * 60);
+                    alertD.dismiss();
+                }
+            });
+
+
             final Button btnCustom = promptView.findViewById(R.id.btnCustom);
             final EditText userInput = promptView.findViewById(R.id.userInput);
+
             int customValue = vipassanaManager.getDefaultDurationMinutes();
             if (customValue < minDurationMinutes) {
                 customValue = minDurationMinutes;
             }
 
             userInput.setText(String.format(Locale.getDefault(),"%d", customValue));
+            userInput.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        btnCustom.callOnClick();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            userInput.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    userInput.setText("");
+                }
+            });
+
             btnCustom.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Integer userValue;

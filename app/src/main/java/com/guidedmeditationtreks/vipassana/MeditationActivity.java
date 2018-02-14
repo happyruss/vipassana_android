@@ -1,12 +1,14 @@
 package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -15,6 +17,9 @@ import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
 
 import java.util.Locale;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class MeditationActivity extends AppCompatActivity implements TrackDelegate {
 
     private ToggleButton playPauseButton;
@@ -22,6 +27,11 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     private TextView meditationNameTextView;
     private boolean isInMeditation = false;
     private VipassanaManager vipassanaManager = VipassanaManager.singleton;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +43,11 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         int gapAmount =  intent.getIntExtra("gapAmount", 0);
         vipassanaManager.playActiveTrackFromBeginning(gapAmount);
         isInMeditation = true;
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     private void closeActivity() {
