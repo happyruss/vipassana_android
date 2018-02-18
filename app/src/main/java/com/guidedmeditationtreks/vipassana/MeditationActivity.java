@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     private TextView meditationNameTextView;
     private boolean isInMeditation = false;
     private VipassanaManager vipassanaManager = VipassanaManager.singleton;
+    private View clearClickBackgroundView;
+    private View blackClickBackgroundView;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -90,8 +93,28 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         playPauseButton.setVisibility(View.VISIBLE);
         timerTextView = findViewById(R.id.timerTextView);
         meditationNameTextView = findViewById(R.id.meditationNameTextView);
-        meditationNameTextView.setText(vipassanaManager.getActiveTrackName());
-        meditationNameTextView.setShadowLayer(3.0f, 3.0f, 3.0f, R.color.colorShadow);
+        meditationNameTextView.setText(vipassanaManager.getActiveTrackLongName());
+        meditationNameTextView.setShadowLayer(2.0f, 2.0f, 2.0f, R.color.colorShadow);
+        clearClickBackgroundView = findViewById(R.id.clearClickBackground);
+        blackClickBackgroundView = findViewById(R.id.blackClickBackground);
+
+        clearClickBackgroundView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                blackClickBackgroundView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        blackClickBackgroundView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                blackClickBackgroundView.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        blackClickBackgroundView.setZ(50);
+        playPauseButton.setZ(20);
+
     }
 
     public void didTapPlayPause(View v) {

@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="@string/meditation_name_placeholder"
         android:gravity="center"
-        android:textSize="34sp"
+        android:textSize="55sp"
         android:textColor="@color/colorTitle"
         fontPath="fonts/font-diner-coffee-service.otf"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,21 +41,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:gravity="center"
-        android:onClick="didTapBackButton"
-        android:src="@mipmap/back"
-        android:tag="0"
-        android:text="Back"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="30dp"
-
-        />
 
     <TextView
         android:id="@+id/appTitle"
@@ -68,6 +53,26 @@
         app:layout_constraintLeft_toRightOf="@id/backButton"
         app:layout_constraintTop_toTopOf="@id/backButton"
         android:layout_marginLeft="30px"
+        />
+
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0:00"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        app:layout_constraintTop_toBottomOf="@id/playPauseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colorGrey"
+        />
+
+    <View
+        android:id="@+id/clearClickBackground"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         />
 
 
@@ -86,19 +91,26 @@
         android:layout_margin="150px"
         />
 
-
-    <TextView
-        android:id="@+id/timerTextView"
+    <ImageButton
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0:00"
+        android:background="@null"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintTop_toBottomOf="@id/playPauseButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorGrey"
+        android:onClick="didTapBackButton"
+        android:src="@mipmap/back"
+        android:tag="0"
+        android:text="Back"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp"
         />
 
+    <View
+        android:id="@+id/blackClickBackground"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorBlack"
+        android:visibility="invisible"
+        />
 
 </android.support.constraint.ConstraintLayout>
