@@ -9,8 +9,8 @@
     tools:context="com.guidedmeditationtreks.vipassana.MeditationActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:src="@mipmap/background"
         android:scaleType="centerCrop"
         />
@@ -34,10 +34,6 @@
         android:gravity="center"
         android:textSize="34sp"
         android:textColor="@color/colorTitle"
-        android:shadowColor="@color/colorShadow"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="2"
         fontPath="fonts/font-diner-coffee-service.otf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +52,10 @@
         android:src="@mipmap/back"
         android:tag="0"
         android:text="Back"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="20dp" />
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp"
 
-
+        />
 
     <TextView
         android:id="@+id/appTitle"
@@ -67,10 +63,11 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorTitle"
         fontPath="fonts/font-diner-coffee-service.otf"
         app:layout_constraintLeft_toRightOf="@id/backButton"
         app:layout_constraintTop_toTopOf="@id/backButton"
+        android:layout_marginLeft="30px"
         />
 
 
@@ -86,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/meditationNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
+        android:layout_margin="150px"
         />
 
 
@@ -96,7 +93,12 @@
         android:layout_height="wrap_content"
         android:text="0:00"
         android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        app:layout_constraintTop_toBottomOf="@id/playPauseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/colorGrey"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

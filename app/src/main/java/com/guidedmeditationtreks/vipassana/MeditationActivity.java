@@ -91,6 +91,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         timerTextView = findViewById(R.id.timerTextView);
         meditationNameTextView = findViewById(R.id.meditationNameTextView);
         meditationNameTextView.setText(vipassanaManager.getActiveTrackName());
+        meditationNameTextView.setShadowLayer(3.0f, 3.0f, 3.0f, R.color.colorShadow);
     }
 
     public void didTapPlayPause(View v) {

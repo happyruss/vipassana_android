@@ -6,5 +6,6 @@
 
     <color name="colorTitle">#FFFFFF</color>
     <color name="colorShadow">#8B572A</color>
+    <color name="colorGrey">#B9B5C8</color>
 
 </resources>
