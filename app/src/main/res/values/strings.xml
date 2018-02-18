@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Vipassana</string>
+    <string name="meditation_name_placeholder">Meditation Name</string>
+
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true"
+        android:state_pressed="true"
+        android:drawable="@drawable/play" /> //currently pressed turning the toggle on
+    <item android:state_pressed="true"
+        android:drawable="@drawable/pause" /> //currently pressed turning the toggle off
+    <item android:state_checked="true"
+        android:drawable="@drawable/pause"/> //not pressed default checked state
+    <item android:drawable="@drawable/play" /> //default non-pressed non-checked
+
+</selector>

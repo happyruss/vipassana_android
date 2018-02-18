@@ -153,6 +153,10 @@ public class Track {
         return trackTemplate.getName();
     }
 
+    public String getLongName() {
+        return trackTemplate.getLongName();
+    }
+
     public void setDelegate(TrackDelegate delegate) {
         this.delegate = delegate;
     }

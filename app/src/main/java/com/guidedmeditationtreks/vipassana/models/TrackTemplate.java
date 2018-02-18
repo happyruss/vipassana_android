@@ -14,14 +14,16 @@ import java.io.File;
 public class TrackTemplate {
 
     private String name;
+    private String longName;
     private boolean isMultiPart;
 
     private int part1Resource;
     private int part2Resource;
 
-    public TrackTemplate(String name, int part1Resource, int part2Resource) {
+    public TrackTemplate(String name, String longName, int part1Resource, int part2Resource) {
 
         this.name = name;
+        this.longName = longName;
         this.part1Resource = part1Resource;
 
         try {
@@ -49,5 +51,8 @@ public class TrackTemplate {
     }
 
     public String getName() { return name; }
+
+    public String getLongName() { return longName; }
+
 
 }

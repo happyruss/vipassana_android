@@ -119,4 +119,11 @@ public class VipassanaManager {
         return activeTrack.getName();
     }
 
+    public String getActiveTrackLongName() {
+        if (activeTrack == null) {
+            return null;
+        }
+        return activeTrack.getLongName();
+    }
+
 }
