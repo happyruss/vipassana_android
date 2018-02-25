@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Vipassana</string>
     <string name="meditation_name_placeholder">Meditation Name</string>
-
+    <string name="url">http://www.guidedmeditationtreks.com/vipassana.html</string>
+    <string name="totalTimePlaceholder">Total time spent in meditation</string>
+    <string name="pickASession">Pick a session to Begin</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -14,6 +15,7 @@ import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     public VipassanaManager vipassanaManager = VipassanaManager.singleton;
 
     private Button introButton;
-    private Button timerButton;
+    private ImageButton timerButton;
+    private ImageButton infoButton;
     private Button shamathaButton;
     private Button anapanaButton;
     private Button focusedAnapanaButton;
@@ -43,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
     public  void didTapMeditationButton(View v) {
         int trackLevel = Integer.parseInt((String)v.getTag());
         presentAlerts(trackLevel);
+    }
+
+    public void didTapInfoButton(View v) {
+        Uri uriUrl = Uri.parse(getResources().getString(R.string.url));
+        Intent webView = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(webView);
     }
 
     private void secureButtons() {
@@ -76,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
         mettaButton = findViewById(R.id.mettaButton);
         timerButton = findViewById(R.id.silentTimerButton);
+        infoButton = findViewById(R.id.infoButton);
         meditationTotalTimeTextView = findViewById(R.id.meditationTotalTimeTextView);
     }
 
