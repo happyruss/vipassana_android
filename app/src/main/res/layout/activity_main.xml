@@ -66,9 +66,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pickASession"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorTitle"
-        android:textSize="35sp"
+        android:textColor="@color/colorGrey"
+        android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="70dp"
@@ -110,6 +109,7 @@
                 android:textColor="@color/colorTitle"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:textSize="25dp"
                 />
 
 
@@ -212,9 +212,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/totalTimePlaceholder"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorTitle"
-        android:textSize="35sp"
+        android:textColor="@color/colorGrey"
+        android:textSize="25dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
