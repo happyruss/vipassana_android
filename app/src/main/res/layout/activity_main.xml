@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,137 +7,218 @@
     android:layout_height="match_parent"
     tools:context="com.guidedmeditationtreks.vipassana.MainActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/background" />
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        fontPath="fonts/font-diner-coffee-service.otf"
+        android:textColor="@color/colorTitle"
+        android:textSize="55sp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <ImageButton
+        android:id="@+id/silentTimerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:background="@null"
         android:gravity="center"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:tag="0"
+        android:onClick="didTapMeditationButton"
+        android:src="@mipmap/clock"
+        android:text="Back"
+        app:layout_constraintEnd_toStartOf="@id/appTitle"
+        app:layout_constraintTop_toTopOf="@id/appTitle"
+        app:layout_constraintBottom_toBottomOf="@id/appTitle"
+        />
 
-        <TextView
-            android:id="@+id/meditationTotalTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total time spent in meditation"
+    <ImageButton
+        android:id="@+id/infoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:background="@null"
+        android:gravity="center"
+        android:tag="0"
+        android:onClick="didTapInfoButton"
+        android:src="@mipmap/info"
+        android:text="Back"
+        app:layout_constraintStart_toEndOf="@id/appTitle"
+        app:layout_constraintTop_toTopOf="@id/appTitle"
+        app:layout_constraintBottom_toBottomOf="@id/appTitle"
+        />
+
+    <TextView
+        android:id="@+id/pickASessionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pickASession"
+        android:textColor="@color/colorGrey"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="70dp"
+        app:layout_constraintTop_toBottomOf="@id/appTitle"
+        />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/pickASessionTextView"
+        app:layout_constraintBottom_toTopOf="@id/meditationTotalTimeTextView"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
             android:gravity="center"
-            fontPath="fonts/font-diner-coffee-service.otf"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-
-        <Button
-            android:id="@+id/silentTimerButton"
-            android:tag="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Silent Meditation"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <Button
                 android:id="@+id/introButton"
                 android:tag="1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Introduction"
                 android:onClick="didTapMeditationButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="25dp"
+                />
+
+
+            <Button
+                android:id="@+id/shamathaButton"
+                android:tag="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shamatha"
+                android:onClick="didTapMeditationButton"
                 android:gravity="center"
-            />
+                />
 
+            <Button
+                android:id="@+id/anapanaButton"
+                android:tag="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anapana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/shamathaButton"
-            android:tag="2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shamatha"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/focusedAnapanaButton"
+                android:tag="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Focused Anapana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/anapanaButton"
-            android:tag="3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Anapana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/vipassanaButton"
+                android:tag="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vipassana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/focusedAnapanaButton"
-            android:tag="4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Focused Anapana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/scanningVipassanaButton"
+                android:tag="6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scanning Vipassana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/vipassanaButton"
-            android:tag="5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vipassana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/symmetricalVipassanaButton"
+                android:tag="7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Symmetrical Vipassana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/scanningVipassanaButton"
-            android:tag="6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scanning Vipassana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/sweepingVipassanButton"
+                android:tag="8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sweeping Vipassana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/symmetricalVipassanaButton"
-            android:tag="7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Symmetrical Vipassana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/inTheMomentVipassanaButton"
+                android:tag="9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In the Moment Vipassana"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/sweepingVipassanButton"
-            android:tag="8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sweeping Vipassana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+            <Button
+                android:id="@+id/mettaButton"
+                android:tag="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mettā"
+                android:onClick="didTapMeditationButton"
+                android:gravity="center"
+                />
 
-        <Button
-            android:id="@+id/inTheMomentVipassanaButton"
-            android:tag="9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="In the Moment Vipassana"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/mettaButton"
-            android:tag="10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mettā"
-            android:onClick="didTapMeditationButton"
-            android:gravity="center"
-            />
+    </ScrollView>
 
+    <TextView
+        android:id="@+id/meditationTotalTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalTimePlaceholder"
+        android:textColor="@color/colorGrey"
+        android:textSize="25dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -9,108 +9,101 @@
     tools:context="com.guidedmeditationtreks.vipassana.MeditationActivity">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@mipmap/background"
         android:scaleType="centerCrop"
-        />
+        android:src="@mipmap/background" />
 
     <ImageView
         android:id="@+id/buddha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/buddha"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/meditationNameTextView"
+        fontPath="fonts/font-diner-coffee-service.otf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/meditation_name_placeholder"
         android:gravity="center"
-        android:textSize="55sp"
+        android:text="@string/meditation_name_placeholder"
         android:textColor="@color/colorTitle"
-        fontPath="fonts/font-diner-coffee-service.otf"
+        android:textSize="55sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/appTitle"
+        fontPath="fonts/font-diner-coffee-service.otf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorTitle"
-        fontPath="fonts/font-diner-coffee-service.otf"
         app:layout_constraintLeft_toRightOf="@id/backButton"
-        app:layout_constraintTop_toTopOf="@id/backButton"
-        android:layout_marginLeft="30px"
-        />
-
+        app:layout_constraintTop_toTopOf="@id/backButton" />
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0:00"
         android:gravity="center"
+        android:text="0:00"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintTop_toBottomOf="@id/playPauseButton"
+        android:textColor="@color/colorGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@color/colorGrey"
-        />
+        app:layout_constraintTop_toBottomOf="@id/playPauseButton" />
 
     <View
         android:id="@+id/clearClickBackground"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
+        android:layout_height="fill_parent" />
 
 
     <ToggleButton
         android:id="@+id/playPauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOn=""
-        android:textOff=""
-        android:onClick="didTapPlayPause"
-        android:gravity="center"
+        android:layout_margin="75dp"
         android:background="@drawable/button_custom"
-        app:layout_constraintTop_toBottomOf="@id/meditationNameTextView"
+        android:gravity="center"
+        android:onClick="didTapPlayPause"
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="150px"
-        />
+        app:layout_constraintTop_toBottomOf="@id/meditationNameTextView" />
 
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:background="@null"
         android:gravity="center"
         android:onClick="didTapBackButton"
         android:src="@mipmap/back"
         android:tag="0"
         android:text="Back"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="30dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/blackClickBackground"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/colorBlack"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
 </android.support.constraint.ConstraintLayout>
