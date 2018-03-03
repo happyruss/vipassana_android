@@ -11,13 +11,15 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.guidedmeditationtreks.vipassana.managers.TrackTemplateFactory;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
+import com.guidedmeditationtreks.vipassana.models.TrackTemplate;
 
 import java.util.Locale;
 
@@ -28,19 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "VipassanaPrefs";
     public VipassanaManager vipassanaManager = VipassanaManager.singleton;
+    public TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.singleton;
 
-    private Button introButton;
     private ImageButton timerButton;
     private ImageButton infoButton;
-    private Button shamathaButton;
-    private Button anapanaButton;
-    private Button focusedAnapanaButton;
-    private Button topToBottomVipassanaButton;
-    private Button scanningVipassanaButton;
-    private Button symmetricalVipassanaButton;
-    private Button sweepingVipassanaButton;
-    private Button inTheMomentVipassanaButton;
-    private Button mettaButton;
+
+//    private Button introButton;
+//    private Button shamathaButton;
+//    private Button anapanaButton;
+//    private Button focusedAnapanaButton;
+//    private Button topToBottomVipassanaButton;
+//    private Button scanningVipassanaButton;
+//    private Button symmetricalVipassanaButton;
+//    private Button sweepingVipassanaButton;
+//    private Button inTheMomentVipassanaButton;
+//    private Button mettaButton;
     private TextView meditationTotalTimeTextView;
 
     public  void didTapMeditationButton(View v) {
@@ -56,17 +60,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void secureButtons() {
         int enabledLevel = vipassanaManager.getUserCompletedTrackLevel() + 1;
-        introButton.setEnabled(true);
+        boolean alwaysEnable = !trackTemplateFactory.getRequireMeditationsBeDoneInOrder();
+        int totalTrackCount = trackTemplateFactory.getTrackTemplateCount();
+
         timerButton.setEnabled(true);
-        shamathaButton.setEnabled(enabledLevel > 1);
-        anapanaButton.setEnabled( enabledLevel > 2);
-        focusedAnapanaButton.setEnabled( enabledLevel > 3);
-        topToBottomVipassanaButton.setEnabled( enabledLevel > 4);
-        scanningVipassanaButton.setEnabled( enabledLevel > 5);
-        symmetricalVipassanaButton.setEnabled( enabledLevel > 6);
-        sweepingVipassanaButton.setEnabled( enabledLevel > 7);
-        inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
-        mettaButton.setEnabled(enabledLevel > 9);
+
+        for (int i = 1; i < totalTrackCount; i++) {
+
+            boolean isNotLastTrack = i < totalTrackCount - 1;
+
+//            let button = view.viewWithTag(i) as! UIButton
+//            button.isEnabled = alwaysEnable || enabledLevel > i - 1
+//            if isNotLastTrack {
+//                let dots = view.viewWithTag(i + 100) as! UIImageView
+//                dots.image = alwaysEnable || enabledLevel > i - 1 ? #imageLiteral(resourceName: "dots") : #imageLiteral(resourceName: "dots copy")
+//                if enabledLevel == i + 1 {
+//                    contentOffset = dots.frame.origin
+//                }
+//            } else if enabledLevel == totalTrackCount {
+//                contentOffset = button.frame.origin
+//
+//            }
+
+
+        }
+
+//        introButton.setEnabled(true);
+//        shamathaButton.setEnabled(enabledLevel > 1);
+//        anapanaButton.setEnabled( enabledLevel > 2);
+//        focusedAnapanaButton.setEnabled( enabledLevel > 3);
+//        topToBottomVipassanaButton.setEnabled( enabledLevel > 4);
+//        scanningVipassanaButton.setEnabled( enabledLevel > 5);
+//        symmetricalVipassanaButton.setEnabled( enabledLevel > 6);
+//        sweepingVipassanaButton.setEnabled( enabledLevel > 7);
+//        inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
+//        mettaButton.setEnabled(enabledLevel > 9);
 
         int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
         String meditationTimeLabelText = medHours == 1 ? String.format(Locale.getDefault(), "%d hour spent meditating", medHours) : String.format(Locale.getDefault(),"%d hours spent meditating", medHours);
@@ -74,19 +102,61 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectView() {
-        introButton = findViewById(R.id.introButton);
-        shamathaButton = findViewById(R.id.shamathaButton);
-        anapanaButton = findViewById(R.id.anapanaButton);
-        focusedAnapanaButton = findViewById(R.id.focusedAnapanaButton);
-        topToBottomVipassanaButton = findViewById(R.id.vipassanaButton);
-        scanningVipassanaButton = findViewById(R.id.scanningVipassanaButton);
-        sweepingVipassanaButton = findViewById(R.id.sweepingVipassanButton);
-        symmetricalVipassanaButton = findViewById(R.id.symmetricalVipassanaButton);
-        inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
-        mettaButton = findViewById(R.id.mettaButton);
         timerButton = findViewById(R.id.silentTimerButton);
         infoButton = findViewById(R.id.infoButton);
         meditationTotalTimeTextView = findViewById(R.id.meditationTotalTimeTextView);
+
+        int trackCount = trackTemplateFactory.getTrackTemplateCount();
+
+        for (int i = 1; i < trackCount; i++) {
+            TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(i);
+
+
+
+//            let button = VipassanaButton()
+//            button.tag = i
+//            button.setTitle(trackTemplate.shortName, for: .normal)
+//            button.addTarget(self, action: #selector(self.didTapMeditationButton(_:)), for: .touchUpInside)
+//            stackView.addArrangedSubview(button)
+//            if (i < trackCount - 1) {
+//                let dots = UIImageView()
+//                dots.contentMode = .scaleAspectFit
+//                dots.tag = i + 100
+//                dots.image = #imageLiteral(resourceName: "dots")
+//                dots.sizeToFit()
+//                stackView.addArrangedSubview(dots)
+//            }
+//            button.sizeToFit()
+//
+//            if i == 1 {
+//                let firstDots = view.viewWithTag(101) as UIView?
+//
+//                let heightOfAButton = button.frame.size.height
+//                let heightOfDots = firstDots?.frame.size.height ?? 0
+//
+//                let heightOfAnItem = heightOfAButton + heightOfDots + 20
+//                let stackViewHeight = heightOfAnItem * CGFloat(trackTemplateFactory.trackTemplates.count)
+//
+//                for constraint in stackView.constraints {
+//                    if constraint.identifier == "stackViewHeightConstraint" {
+//                        constraint.constant = stackViewHeight
+//                    }
+//                }
+//
+//            }
+        }
+
+
+//        introButton = findViewById(R.id.introButton);
+//        shamathaButton = findViewById(R.id.shamathaButton);
+//        anapanaButton = findViewById(R.id.anapanaButton);
+//        focusedAnapanaButton = findViewById(R.id.focusedAnapanaButton);
+//        topToBottomVipassanaButton = findViewById(R.id.vipassanaButton);
+//        scanningVipassanaButton = findViewById(R.id.scanningVipassanaButton);
+//        sweepingVipassanaButton = findViewById(R.id.sweepingVipassanButton);
+//        symmetricalVipassanaButton = findViewById(R.id.symmetricalVipassanaButton);
+//        inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
+//        mettaButton = findViewById(R.id.mettaButton);
     }
 
     @Override

@@ -93,8 +93,10 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:focusable="true"
-            android:focusableInTouchMode="true">
-
+            android:focusableInTouchMode="true"
+            android:id="@+id/buttonLinearLayout"
+            >
+<!--
             <Button
                 android:id="@+id/introButton"
                 android:tag="1"
@@ -202,7 +204,7 @@
                 android:onClick="didTapMeditationButton"
                 android:gravity="center"
                 />
-
+-->
         </LinearLayout>
 
     </ScrollView>
