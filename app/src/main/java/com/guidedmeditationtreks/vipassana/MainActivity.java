@@ -55,18 +55,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void secureButtons() {
+
+        float disabledAlpha = 0.35f;
+
         int enabledLevel = vipassanaManager.getUserCompletedTrackLevel() + 1;
         introButton.setEnabled(true);
         timerButton.setEnabled(true);
+
+        findViewById(R.id.dots2).setBackgroundResource(enabledLevel > 1 ? R.mipmap.dots : R.mipmap.dots_copy);
         shamathaButton.setEnabled(enabledLevel > 1);
-        anapanaButton.setEnabled( enabledLevel > 2);
+        shamathaButton.setAlpha(enabledLevel > 1 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots3).setBackgroundResource(enabledLevel > 2 ? R.mipmap.dots : R.mipmap.dots_copy);
+        anapanaButton.setEnabled(enabledLevel > 2);
+        anapanaButton.setAlpha(enabledLevel > 2 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots4).setBackgroundResource(enabledLevel > 3 ? R.mipmap.dots : R.mipmap.dots_copy);
         focusedAnapanaButton.setEnabled( enabledLevel > 3);
+        focusedAnapanaButton.setAlpha(enabledLevel > 3 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots5).setBackgroundResource(enabledLevel > 4 ? R.mipmap.dots : R.mipmap.dots_copy);
         topToBottomVipassanaButton.setEnabled( enabledLevel > 4);
+        topToBottomVipassanaButton.setAlpha(enabledLevel > 4 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots6).setBackgroundResource(enabledLevel > 5 ? R.mipmap.dots : R.mipmap.dots_copy);
         scanningVipassanaButton.setEnabled( enabledLevel > 5);
+        scanningVipassanaButton.setAlpha(enabledLevel > 5 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots7).setBackgroundResource(enabledLevel > 6 ? R.mipmap.dots : R.mipmap.dots_copy);
         symmetricalVipassanaButton.setEnabled( enabledLevel > 6);
+        symmetricalVipassanaButton.setAlpha(enabledLevel > 6 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots8).setBackgroundResource(enabledLevel > 7 ? R.mipmap.dots : R.mipmap.dots_copy);
         sweepingVipassanaButton.setEnabled( enabledLevel > 7);
+        sweepingVipassanaButton.setAlpha(enabledLevel > 7 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots9).setBackgroundResource(enabledLevel > 8 ? R.mipmap.dots : R.mipmap.dots_copy);
         inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
+        inTheMomentVipassanaButton.setAlpha(enabledLevel > 8 ? 1.0f : disabledAlpha);
+
+        findViewById(R.id.dots10).setBackgroundResource(enabledLevel > 9 ? R.mipmap.dots : R.mipmap.dots_copy);
         mettaButton.setEnabled(enabledLevel > 9);
+        mettaButton.setAlpha(enabledLevel > 9 ? 1.0f : disabledAlpha);
+
 
         int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
         String meditationTimeLabelText = medHours == 1 ? String.format(Locale.getDefault(), "%d hour spent meditating", medHours) : String.format(Locale.getDefault(),"%d hours spent meditating", medHours);

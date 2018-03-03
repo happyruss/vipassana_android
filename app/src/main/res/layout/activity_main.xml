@@ -96,11 +96,12 @@
             android:focusableInTouchMode="true">
 
             <Button
+                android:textAllCaps="false"
                 android:id="@+id/introButton"
                 android:tag="1"
+                android:text="Introduction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Introduction"
                 android:onClick="didTapMeditationButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -112,95 +113,213 @@
                 android:textSize="25dp"
                 />
 
+            <ImageView
+                android:id="@+id/dots2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
+                android:textAllCaps="false"
                 android:id="@+id/shamathaButton"
                 android:tag="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Shamatha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/anapanaButton"
                 android:tag="3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Anapana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/focusedAnapanaButton"
                 android:tag="4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Focused Anapana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/vipassanaButton"
                 android:tag="5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Vipassana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/scanningVipassanaButton"
                 android:tag="6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Scanning Vipassana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/symmetricalVipassanaButton"
                 android:tag="7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Symmetrical Vipassana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
 
             <Button
                 android:id="@+id/sweepingVipassanButton"
                 android:tag="8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Sweeping Vipassana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
 
             <Button
                 android:id="@+id/inTheMomentVipassanaButton"
                 android:tag="9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="In the Moment Vipassana"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
+
+            <ImageView
+                android:id="@+id/dots10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/mettaButton"
                 android:tag="10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Mettā"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="didTapMeditationButton"
-                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/rounded_button"
+                fontPath="fonts/font-diner-coffee-service.otf"
+                android:textColor="@color/colorTitle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="25dp"
                 />
 
         </LinearLayout>
