@@ -75,9 +75,13 @@
         />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pickASessionTextView"
         app:layout_constraintBottom_toTopOf="@id/meditationTotalTimeTextView"
         android:layout_marginTop="20dp"
@@ -88,7 +92,7 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp"
             android:gravity="center"
