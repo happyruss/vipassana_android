@@ -5,37 +5,59 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorBlack"
+    >
 
     <Button
         android:id="@+id/btnMinimum"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text=""
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/colorTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
 
     <Button
         android:id="@+id/btnFortyFive"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="45 Minutes" />
+        android:text="45 Minutes"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/colorTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
 
     <Button
         android:id="@+id/btnHour"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="60 Minutes (recommended)" />
+        android:text="60 Minutes (recommended)"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/colorTitle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <Button
             android:id="@+id/btnCustom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Custom Time" />
+            android:text="Custom Time"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/colorTitle"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
 
         <EditText
             android:id="@+id/userInput"
@@ -43,7 +65,12 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:selectAllOnFocus="true"
-            android:imeOptions="actionDone">
+            android:imeOptions="actionDone"
+            android:background="@color/colorGrey"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            >
         </EditText>
 
         <TextView
@@ -53,7 +80,6 @@
             android:text="minutes"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
-
 
     </LinearLayout>
 

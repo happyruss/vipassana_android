@@ -9,7 +9,6 @@
         android:id="@+id/templateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="didTapMeditationButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/rounded_button"
