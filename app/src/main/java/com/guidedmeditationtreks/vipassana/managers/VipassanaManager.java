@@ -17,7 +17,7 @@ public class VipassanaManager {
 
     public static VipassanaManager singleton = new VipassanaManager();
     private SharedPreferences settings;
-    private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.shared;
+    private TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.singleton;
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;

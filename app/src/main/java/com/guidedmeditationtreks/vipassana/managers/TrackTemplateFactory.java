@@ -11,9 +11,11 @@ import java.util.jar.Attributes;
 
 public class TrackTemplateFactory {
 
-    public static TrackTemplateFactory shared = new TrackTemplateFactory();
+    public static TrackTemplateFactory singleton = new TrackTemplateFactory();
 
     private TrackTemplate[] trackTemplates;
+
+    private boolean requireMeditationsBeDoneInOrder = true;
 
     public TrackTemplateFactory() {
 
@@ -29,9 +31,9 @@ public class TrackTemplateFactory {
 
         trackTemplates[4] = new TrackTemplate(  "Focused Anapana", "Focused Anapana",R.raw.focusedanapana, R.raw.focusedanapana2);
 
-        trackTemplates[5] = new TrackTemplate( "Vispassana", "Vispassana", R.raw.toptobottom, R.raw.toptobottom2);
+        trackTemplates[5] = new TrackTemplate( "Vispassana", "Top To Bottom Vispassana", R.raw.toptobottom, R.raw.toptobottom2);
 
-        trackTemplates[6] = new TrackTemplate( "Scanning Vipassana", "Scanning Vipassana", R.raw.toptobottombottomtotop, R.raw.toptobottombottomtotop2);
+        trackTemplates[6] = new TrackTemplate( "Scanning Vipassana", "Part By Part Vipassana", R.raw.toptobottombottomtotop, R.raw.toptobottombottomtotop2);
 
         trackTemplates[7] = new TrackTemplate( "Symmetrical Vispassana", "Symmetrical Vispassana",R.raw.symmetrical, R.raw.symmetrical2);
 
@@ -46,4 +48,6 @@ public class TrackTemplateFactory {
     public TrackTemplate getTrackTemplate(int index) {
         return trackTemplates[index];
     }
+    public boolean getRequireMeditationsBeDoneInOrder() { return requireMeditationsBeDoneInOrder; }
+    public int getTrackTemplateCount() { return trackTemplates.length; }
 }

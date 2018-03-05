@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +17,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.guidedmeditationtreks.vipassana.managers.TrackTemplateFactory;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
+import com.guidedmeditationtreks.vipassana.models.TrackTemplate;
 
 import java.util.Locale;
 
@@ -28,23 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_NAME = "VipassanaPrefs";
     public VipassanaManager vipassanaManager = VipassanaManager.singleton;
+    public TrackTemplateFactory trackTemplateFactory = TrackTemplateFactory.singleton;
 
-    private Button introButton;
     private ImageButton timerButton;
     private ImageButton infoButton;
-    private Button shamathaButton;
-    private Button anapanaButton;
-    private Button focusedAnapanaButton;
-    private Button topToBottomVipassanaButton;
-    private Button scanningVipassanaButton;
-    private Button symmetricalVipassanaButton;
-    private Button sweepingVipassanaButton;
-    private Button inTheMomentVipassanaButton;
-    private Button mettaButton;
     private TextView meditationTotalTimeTextView;
 
     public  void didTapMeditationButton(View v) {
-        int trackLevel = Integer.parseInt((String)v.getTag());
+        int trackLevel = (int)v.getTag();
         presentAlerts(trackLevel);
     }
 
@@ -57,47 +54,26 @@ public class MainActivity extends AppCompatActivity {
     private void secureButtons() {
 
         float disabledAlpha = 0.5f;
-
         int enabledLevel = vipassanaManager.getUserCompletedTrackLevel() + 1;
-        introButton.setEnabled(true);
+        boolean alwaysEnable = !trackTemplateFactory.getRequireMeditationsBeDoneInOrder();
+        int totalTrackCount = trackTemplateFactory.getTrackTemplateCount();
         timerButton.setEnabled(true);
 
-        findViewById(R.id.dots2).setBackgroundResource(enabledLevel > 0 ? R.mipmap.dots : R.mipmap.dots_copy);
-        shamathaButton.setEnabled(enabledLevel > 1);
-        shamathaButton.setAlpha(enabledLevel > 1 ? 1.0f : disabledAlpha);
+        for (int i = 1; i < totalTrackCount; i++) {
+            TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(i);
 
-        findViewById(R.id.dots3).setBackgroundResource(enabledLevel > 1 ? R.mipmap.dots : R.mipmap.dots_copy);
-        anapanaButton.setEnabled(enabledLevel > 2);
-        anapanaButton.setAlpha(enabledLevel > 2 ? 1.0f : disabledAlpha);
+            boolean isNotLastTrack = i < totalTrackCount - 1;
+            LinearLayout linearLayout = this.findViewById(R.id.buttonLinearLayout);
 
-        findViewById(R.id.dots4).setBackgroundResource(enabledLevel > 2 ? R.mipmap.dots : R.mipmap.dots_copy);
-        focusedAnapanaButton.setEnabled( enabledLevel > 3);
-        focusedAnapanaButton.setAlpha(enabledLevel > 3 ? 1.0f : disabledAlpha);
+            Button button = linearLayout.findViewById(trackTemplate.getButtonId());
+            button.setEnabled(alwaysEnable || enabledLevel >= i);
+            button.setAlpha(enabledLevel >= i ? 1.0f : disabledAlpha);
 
-        findViewById(R.id.dots5).setBackgroundResource(enabledLevel > 3 ? R.mipmap.dots : R.mipmap.dots_copy);
-        topToBottomVipassanaButton.setEnabled( enabledLevel > 4);
-        topToBottomVipassanaButton.setAlpha(enabledLevel > 4 ? 1.0f : disabledAlpha);
-
-        findViewById(R.id.dots6).setBackgroundResource(enabledLevel > 4 ? R.mipmap.dots : R.mipmap.dots_copy);
-        scanningVipassanaButton.setEnabled( enabledLevel > 5);
-        scanningVipassanaButton.setAlpha(enabledLevel > 5 ? 1.0f : disabledAlpha);
-
-        findViewById(R.id.dots7).setBackgroundResource(enabledLevel > 5 ? R.mipmap.dots : R.mipmap.dots_copy);
-        symmetricalVipassanaButton.setEnabled( enabledLevel > 6);
-        symmetricalVipassanaButton.setAlpha(enabledLevel > 6 ? 1.0f : disabledAlpha);
-
-        findViewById(R.id.dots8).setBackgroundResource(enabledLevel > 6 ? R.mipmap.dots : R.mipmap.dots_copy);
-        sweepingVipassanaButton.setEnabled( enabledLevel > 7);
-        sweepingVipassanaButton.setAlpha(enabledLevel > 7 ? 1.0f : disabledAlpha);
-
-        findViewById(R.id.dots9).setBackgroundResource(enabledLevel > 7 ? R.mipmap.dots : R.mipmap.dots_copy);
-        inTheMomentVipassanaButton.setEnabled( enabledLevel > 8);
-        inTheMomentVipassanaButton.setAlpha(enabledLevel > 8 ? 1.0f : disabledAlpha);
-
-        findViewById(R.id.dots10).setBackgroundResource(enabledLevel > 8 ? R.mipmap.dots : R.mipmap.dots_copy);
-        mettaButton.setEnabled(enabledLevel > 9);
-        mettaButton.setAlpha(enabledLevel > 9 ? 1.0f : disabledAlpha);
-
+            if (isNotLastTrack) {
+                ImageView dots = this.findViewById(trackTemplate.getSpacerId());
+                dots.setBackgroundResource(alwaysEnable || enabledLevel >= i ? R.mipmap.dots : R.mipmap.dots_copy);
+            }
+        }
 
         int medHours = vipassanaManager.getUserTotalSecondsInMeditation() / 3600;
         String meditationTimeLabelText = medHours == 1 ? String.format(Locale.getDefault(), "%d hour spent meditating", medHours) : String.format(Locale.getDefault(),"%d hours spent meditating", medHours);
@@ -105,19 +81,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectView() {
-        introButton = findViewById(R.id.introButton);
-        shamathaButton = findViewById(R.id.shamathaButton);
-        anapanaButton = findViewById(R.id.anapanaButton);
-        focusedAnapanaButton = findViewById(R.id.focusedAnapanaButton);
-        topToBottomVipassanaButton = findViewById(R.id.vipassanaButton);
-        scanningVipassanaButton = findViewById(R.id.scanningVipassanaButton);
-        sweepingVipassanaButton = findViewById(R.id.sweepingVipassanButton);
-        symmetricalVipassanaButton = findViewById(R.id.symmetricalVipassanaButton);
-        inTheMomentVipassanaButton = findViewById(R.id.inTheMomentVipassanaButton);
-        mettaButton = findViewById(R.id.mettaButton);
         timerButton = findViewById(R.id.silentTimerButton);
         infoButton = findViewById(R.id.infoButton);
         meditationTotalTimeTextView = findViewById(R.id.meditationTotalTimeTextView);
+
+        int trackCount = trackTemplateFactory.getTrackTemplateCount();
+
+        for (int i = 1; i < trackCount; i++) {
+            TrackTemplate trackTemplate = trackTemplateFactory.getTrackTemplate(i);
+            trackTemplate.setButtonId(View.generateViewId());
+            trackTemplate.setSpacerId(View.generateViewId());
+
+            View v = LayoutInflater.from(this).inflate(R.layout.button_template, null);
+            Button button = (Button) v.findViewById(R.id.templateButton);
+            button.setTag(i);
+            button.setId(trackTemplate.getButtonId());
+            button.setText(trackTemplate.getName());
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    didTapMeditationButton(v);
+                }
+            });
+            LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.buttonLinearLayout);
+            LinearLayout parent = (LinearLayout) button.getParent();
+            parent.removeView(button);
+            linearLayout.addView(button);
+            if (i < trackCount - 1) {
+                ImageView dots = (ImageView) v.findViewById(R.id.templateDots);
+                dots.setId(trackTemplate.getSpacerId());
+                parent.removeView(dots);
+                linearLayout.addView(dots);
+            }
+        }
     }
 
     @Override

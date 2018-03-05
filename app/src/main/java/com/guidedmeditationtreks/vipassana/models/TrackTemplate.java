@@ -19,6 +19,8 @@ public class TrackTemplate {
 
     private int part1Resource;
     private int part2Resource;
+    private int buttonId;
+    private int spacerId;
 
     public TrackTemplate(String name, String longName, int part1Resource, int part2Resource) {
 
@@ -53,6 +55,22 @@ public class TrackTemplate {
     public String getName() { return name; }
 
     public String getLongName() { return longName; }
+
+    public int getButtonId() {
+        return buttonId;
+    }
+
+    public void setButtonId(int buttonId) {
+        this.buttonId = buttonId;
+    }
+
+    public int getSpacerId() {
+        return spacerId;
+    }
+
+    public void setSpacerId(int spacerId) {
+        this.spacerId = spacerId;
+    }
 
 
 }
