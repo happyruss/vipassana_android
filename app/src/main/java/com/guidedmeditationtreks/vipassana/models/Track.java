@@ -1,8 +1,16 @@
 package com.guidedmeditationtreks.vipassana.models;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.util.Log;
+
+import com.google.android.vending.expansion.zipfile.APKExpansionSupport;
+import com.google.android.vending.expansion.zipfile.ZipResourceFile;
+import com.guidedmeditationtreks.vipassana.licensing.MeditationDownloaderActivity;
+
+import java.io.IOException;
 
 /**
  * Created by aerozero on 12/22/17.
@@ -27,20 +35,38 @@ public class Track {
     private MediaPlayer playerPart2;
 
     private TrackDelegate delegate;
+    private ZipResourceFile expansionFile;
 
 
     public Track(TrackTemplate trackTemplate, Context context) {
 
+        try {
+            expansionFile =  APKExpansionSupport.getAPKExpansionZipFile(context, MeditationDownloaderActivity.xAPKS[0].mFileVersion, 0);
+        } catch (IOException ex) {
+            Log.e("Vipassana", "Error Getting expansion Zip File");
+        }
+
         this.trackTemplate = trackTemplate;
 
         //initialize the audio files
-        this.playerPart1 = MediaPlayer.create(context, trackTemplate.getPart1Resource());
-        //playerPart1.start(); // no need to call prepare(); create() does that for you
+        AssetFileDescriptor part1Asset = expansionFile.getAssetFileDescriptor(trackTemplate.getPart1ResourceName());
+        this.playerPart1 = new MediaPlayer();
+        try {
+            this.playerPart1.setDataSource(part1Asset.getFileDescriptor(), part1Asset.getStartOffset(), part1Asset.getLength());
+        } catch(IOException ex) {
+            Log.e("Vipassana", "Error Getting Meditation track from Zip File");
+        }
 
         this.part1Duration = this.playerPart1.getDuration() / 1000;
 
         if (this.trackTemplate.isMultiPart()) {
-            this.playerPart2 = MediaPlayer.create(context, trackTemplate.getPart2Resource());
+            AssetFileDescriptor part2Asset = expansionFile.getAssetFileDescriptor(trackTemplate.getPart2ResourceName());
+            this.playerPart2 = new MediaPlayer();
+            try {
+                this.playerPart2.setDataSource(part2Asset.getFileDescriptor(), part2Asset.getStartOffset(), part2Asset.getLength());
+            } catch(IOException ex) {
+                Log.e("Vipassana", "Error Getting Meditation track from Zip File");
+            }
             this.part2Duration = this.playerPart2.getDuration() / 1000;
             this.minimumDuration = this.part1Duration + this.part2Duration;
         } else {

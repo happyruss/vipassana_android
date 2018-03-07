@@ -8,3 +8,5 @@
 /captures
 .externalNativeBuild
 app/src/main/res/raw
+app/src/main/java/com/guidedmeditationtreks/vipassana/licensing/MeditationDownloaderService.java
+ExpansionFiles
