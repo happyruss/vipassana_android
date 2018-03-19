@@ -35,7 +35,9 @@ public class APKExpansionSupport {
 				Environment.MEDIA_MOUNTED)) {
 			// Build the full path to the app's expansion files
 			File root = Environment.getExternalStorageDirectory();
-			File expPath = new File(root.toString() + EXP_PATH + packageName);
+//			File expPath = new File(root.toString() + EXP_PATH + packageName);
+			File[] expPaths = ctx.getObbDirs();
+			File expPath = expPaths[1];
 
 			// Check that expansion file path exists
 			if (expPath.exists()) {

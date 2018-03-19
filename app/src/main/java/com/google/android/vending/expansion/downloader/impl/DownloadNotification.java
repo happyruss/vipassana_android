@@ -136,6 +136,7 @@ public class DownloadNotification implements IDownloaderClient {
             mCurrentNotification.icon = iconResource;
             //TODO: Why does google provide non-working code?
 //            mCurrentNotification.setLatestEventInfo(mContext, mCurrentTitle, mCurrentText, mContentIntent);
+//            mNotification.contentIntent = mContentIntent; //workaround
             if (ongoingEvent) {
                 mCurrentNotification.flags |= Notification.FLAG_ONGOING_EVENT;
             } else {
@@ -158,6 +159,7 @@ public class DownloadNotification implements IDownloaderClient {
             mNotification.icon = android.R.drawable.stat_sys_download;
             //TODO: Why does google provide deprecated and non-working code?
 //            mNotification.setLatestEventInfo(mContext, mLabel, mCurrentText, mContentIntent);
+//            mNotification.contentIntent = mContentIntent;  //workaround
             mCurrentNotification = mNotification;
         } else {
             mCustomNotification.setCurrentBytes(progress.mOverallProgress);
@@ -220,9 +222,17 @@ public class DownloadNotification implements IDownloaderClient {
                 mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         mCustomNotification = CustomNotificationFactory
                 .createCustomNotification();
-        mNotification = new Notification();
-        mCurrentNotification = mNotification;
 
+// BROKEN BY ANDROID
+//        mNotification = new Notification();
+
+//REPLACEMENT
+        Notification.Builder builder = new Notification.Builder(ctx);
+        builder.setContentIntent(mContentIntent);
+        mNotification = builder.build();
+
+
+        mCurrentNotification = mNotification;
     }
 
     @Override

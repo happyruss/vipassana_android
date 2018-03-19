@@ -5,4 +5,5 @@
     <color name="colorGrey">#B9B5C8</color>
     <color name="colorBlack">#000000</color>
     <color name="colorButton">#8E7D61</color>
+    <color name="colorError">#FF0000</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.guidedmeditationtreks.vipassana;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,8 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +25,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.vending.expansion.downloader.Helpers;
+import com.google.android.vending.expansion.zipfile.APKExpansionSupport;
+import com.google.android.vending.licensing.AESObfuscator;
+import com.google.android.vending.licensing.LicenseChecker;
+import com.google.android.vending.licensing.LicenseCheckerCallback;
+import com.google.android.vending.licensing.Policy;
+import com.google.android.vending.licensing.ServerManagedPolicy;
+import com.guidedmeditationtreks.vipassana.licensing.MeditationDownloaderActivity;
 import com.guidedmeditationtreks.vipassana.managers.TrackTemplateFactory;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 import com.guidedmeditationtreks.vipassana.models.TrackTemplate;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -39,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton timerButton;
     private ImageButton infoButton;
     private TextView meditationTotalTimeTextView;
+
+    //Licensing and Expansion Stuff
+    private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsLnfE45WJDnwhP+Yc1+mhgK1lC0g5DxuoLK4l9kpz0CWVgBIrDeLne0u1K25W8/emi/sTWCVcJlb6M1wRKf2/ukW2Koz4UApUWDJYsLz34rooRJRoyk6tESQSE+Jjg816wZpjNpsG6+iMrBSjcanb2wbK9+sr9wMuDHqPooAdcrOcntrtjnroZ+L08TOqe/827S0ffpDKYziwobaDiJZxwrtoX92KdkrMA0FuNkBch4nPv9kXOMcBDZCaMmCFPZqmWi2lpfREG4MUts6bxpXDqET/2D1MMLvkSH0AEjn+UENu3avKkvVnCJW/CJXaQ+G/7OdFDulXVpRr8b1Qh06gQIDAQAB";
+    private static final byte[] SALT = new byte[] {
+            -34, -35, 47, -17, 22, -119, -21, 54, -94, -11, 18, 52, -18, 15, -31, -115, -2, -43, -22, 43
+    };
+    private LicenseCheckerCallback mLicenseCheckerCallback;
+    private LicenseChecker mChecker;
+    private AlertDialog.Builder alertDialogLicense;
+    private AlertDialog alertLicense;
+    private Handler mHandler;
+    private int policyErrorCode;
 
     public  void didTapMeditationButton(View v) {
         int trackLevel = (int)v.getTag();
@@ -80,6 +105,41 @@ public class MainActivity extends AppCompatActivity {
         meditationTotalTimeTextView.setText(meditationTimeLabelText);
     }
 
+    private boolean expansionFilesDelivered() {
+        for (MeditationDownloaderActivity.XAPKFile xf :  MeditationDownloaderActivity.xAPKS) {
+            String fileName = Helpers.getExpansionAPKFileName(this, xf.mIsMain, xf.mFileVersion);
+            if (!Helpers.doesFileExist(this, fileName, xf.mFileSize, false)) {
+                Log.e("vipassana", "ExpansionAPKFile doesn't exist or has a wrong size (" + fileName + ").");
+                return false;
+            }
+        }
+        return true;
+    }
+
+//    private void setExpansionFile() {
+//        try {
+//            meditationPlayer.setExpansionFile(APKExpansionSupport.getAPKExpansionZipFile(this, MeditationDownloaderActivity.xAPKS[0].mFileVersion, 0));
+//        } catch (IOException ex) {
+//            Log.e("Vipassana", "Error Getting expansion Zip File");
+//        }
+//    }
+
+    private void handleExpansionFile() {
+        //Handle Expansion File stuff
+        if (!expansionFilesDelivered()){
+            Intent intent= new Intent(this, MeditationDownloaderActivity.class);
+            if (this.getIntent().getCategories() != null) {
+                for (String category : this.getIntent().getCategories()) {
+                    intent.addCategory(category);
+                }
+            }
+            startService(intent);
+            startActivityForResult(intent, 1);
+        } else {
+//            setExpansionFile();
+        }
+    }
+
     private void connectView() {
         timerButton = findViewById(R.id.silentTimerButton);
         infoButton = findViewById(R.id.infoButton);
@@ -113,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
                 linearLayout.addView(dots);
             }
         }
+
+        handleExpansionFile();
     }
 
     @Override
@@ -123,6 +185,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        handleLicensing();
+
         setContentView(R.layout.activity_main);
         connectView();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -133,6 +198,28 @@ public class MainActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+    }
+
+    private void handleLicensing() {
+        //Begin Licensing Stuff
+        alertDialogLicense = new AlertDialog.Builder(MainActivity.this);
+        prepareLicenseAlertDialog();
+        mHandler = new Handler();
+
+        // Try to use more data here. ANDROID_ID is a single point of attack.
+        String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        // Construct the LicenseCheckerCallback. The library calls this when done.
+        mLicenseCheckerCallback = new MyLicenseCheckerCallback();
+
+        // Construct the LicenseChecker with a Policy.
+        mChecker = new LicenseChecker(
+                this, new ServerManagedPolicy(this,
+                new AESObfuscator(SALT, getPackageName(), deviceId)),
+                BASE64_PUBLIC_KEY  // Your public licensing key.
+        );
+        mChecker.checkAccess(mLicenseCheckerCallback);
+        //End Licensing Stuff
     }
 
     private void presentAlerts(final int trackLevel) {
@@ -252,8 +339,20 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MEDITATION_ACTIVITY_REQUEST_CODE)
+        if (requestCode == MEDITATION_ACTIVITY_REQUEST_CODE) {
             secureButtons();
+        } else if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+//                setExpansionFile();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+                alertDialogLicense.setTitle(String.format("Error Getting Expansion File! Error Code:%d", 0));
+                alertLicense = alertDialogLicense.create();
+                alertLicense.show();
+            }
+        }
     }
 
     private void runMeditationWithGap(int gapAmount) {
@@ -269,5 +368,103 @@ public class MainActivity extends AppCompatActivity {
         runMeditationWithGap(gapLength);
     }
 
+
+    //Licensing
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mChecker.onDestroy();
+    }
+
+    private class MyLicenseCheckerCallback implements LicenseCheckerCallback {
+        public void allow(int policyReason) {
+            if (isFinishing()) {
+                // Don't update UI if Activity is finishing.
+                return;
+            }
+            // Should allow user access.
+            //displayResult(getString(R.string.allow));
+        }
+
+        public void dontAllow(int policyReason) {
+            if (isFinishing()) {
+                // Don't update UI if Activity is finishing.
+                return;
+            }
+            if (Policy.RETRY == policyReason)
+            {
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        alertDialogLicense.setMessage("Make sure that your phone is configured to your Google Account. Retry License Check?");
+                        alertDialogLicense.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mChecker.checkAccess(mLicenseCheckerCallback);
+                                //dialog.cancel();
+                            }
+                        });
+                        alertDialogLicense.setTitle("License Check Failed!");
+                        alertLicense = alertDialogLicense.create();
+                        alertLicense.show();
+                    }
+                });
+            } else {
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        alertDialogLicense.setMessage("Unlicensed App!");
+                        alertDialogLicense.setPositiveButton("Play", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                                        "http://market.android.com/details?id=" + getPackageName()));
+                                startActivity(marketIntent);
+                                //dialog.cancel();
+                            }
+                        });
+                        alertDialogLicense.setTitle("License Check Failed!");
+                        alertLicense = alertDialogLicense.create();
+                        alertLicense.show();
+                    }
+                });
+            }
+        }
+
+        public void applicationError(int errorCode) {
+            policyErrorCode = errorCode;
+            if (isFinishing()) {
+                // Don't update UI if Activity is finishing.
+                return;
+            }
+            mHandler.post(new Runnable() {
+                public void run() {
+                    // This is a polite way of saying the developer made a mistake
+                    // while setting up or calling the license checker library.
+                    // Please examine the error code and fix the error.
+                    //String result = String.format(getString(R.string.application_error), errorCode);
+                    alertDialogLicense.setTitle(String.format("Error Checking License! Error Code:%d", policyErrorCode));
+                    alertLicense = alertDialogLicense.create();
+                    alertLicense.show();
+                }
+            });
+        }
+    }
+
+    private void prepareLicenseAlertDialog() {
+
+        // set dialog message
+        alertDialogLicense
+                .setCancelable(false)
+                .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        System.exit(0);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        MainActivity.this.finish();
+
+                        //manual override
+                        //dialog.cancel();
+                    }
+                });
+    }
 
 }

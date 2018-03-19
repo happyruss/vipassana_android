@@ -41,6 +41,9 @@ public class Track {
     public Track(TrackTemplate trackTemplate, Context context) {
 
         try {
+
+
+
             expansionFile =  APKExpansionSupport.getAPKExpansionZipFile(context, MeditationDownloaderActivity.xAPKS[0].mFileVersion, 0);
         } catch (IOException ex) {
             Log.e("Vipassana", "Error Getting expansion Zip File");
@@ -53,6 +56,7 @@ public class Track {
         this.playerPart1 = new MediaPlayer();
         try {
             this.playerPart1.setDataSource(part1Asset.getFileDescriptor(), part1Asset.getStartOffset(), part1Asset.getLength());
+            this.playerPart1.prepare();
         } catch(IOException ex) {
             Log.e("Vipassana", "Error Getting Meditation track from Zip File");
         }
@@ -64,6 +68,7 @@ public class Track {
             this.playerPart2 = new MediaPlayer();
             try {
                 this.playerPart2.setDataSource(part2Asset.getFileDescriptor(), part2Asset.getStartOffset(), part2Asset.getLength());
+                this.playerPart2.prepare();
             } catch(IOException ex) {
                 Log.e("Vipassana", "Error Getting Meditation track from Zip File");
             }
