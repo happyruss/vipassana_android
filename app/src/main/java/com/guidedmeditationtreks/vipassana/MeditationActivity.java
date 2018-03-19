@@ -42,15 +42,21 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         setContentView(R.layout.activity_meditation);
         vipassanaManager.setDelegate(this);
         connectView();
-        Intent intent = getIntent();
-        int gapAmount =  intent.getIntExtra("gapAmount", 0);
-        vipassanaManager.playActiveTrackFromBeginning(gapAmount);
-        isInMeditation = true;
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        if (!vipassanaManager.getInMeditation()) { //workaround for screen rotation
+            Intent intent = getIntent();
+            int gapAmount =  intent.getIntExtra("gapAmount", 0);
+            vipassanaManager.playActiveTrackFromBeginning(gapAmount);
+            vipassanaManager.setInMeditation(true);
+        }
+        if (!vipassanaManager.getTrackCompleted()) {
+            isInMeditation = true;
+        }
     }
 
     private void closeActivity() {
@@ -133,6 +139,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         vipassanaManager.userCompletedTrack();
         playPauseButton.setVisibility(View.INVISIBLE);
         isInMeditation = false;
+        vipassanaManager.setTrackCompleted(true);
     }
 
 
