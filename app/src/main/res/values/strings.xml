@@ -4,4 +4,8 @@
     <string name="url">http://www.guidedmeditationtreks.com/vipassana.html</string>
     <string name="totalTimePlaceholder">Total time spent in meditation</string>
     <string name="pickASession">Pick a session to Begin</string>
+    <string name="background_image">background image</string>
+    <string name="timer_button_description">silent timer button</string>
+    <string name="back">Back</string>
+    <string name="app_info_link">app info link</string>
 </resources>

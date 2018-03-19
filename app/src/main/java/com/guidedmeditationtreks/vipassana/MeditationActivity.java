@@ -124,7 +124,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     @Override
     public void trackTimeRemainingUpdated(int timeRemaining) {
         vipassanaManager.incrementTotalSecondsInMeditation();
-        String timeRemainingString = String.format(Locale.getDefault(), "%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
+        String timeRemainingString = String.format(Locale.getDefault(), "%01d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
         timerTextView.setText(timeRemainingString);
     }
 

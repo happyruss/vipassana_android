@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton infoButton;
     private TextView meditationTotalTimeTextView;
 
+    public  void didTapTimerButton(View v) {
+        presentAlerts(0);
+    }
+
+
     public  void didTapMeditationButton(View v) {
         int trackLevel = (int)v.getTag();
         presentAlerts(trackLevel);
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             trackTemplate.setSpacerId(View.generateViewId());
 
             View v = LayoutInflater.from(this).inflate(R.layout.button_template, null);
-            Button button = (Button) v.findViewById(R.id.templateButton);
+            Button button = v.findViewById(R.id.templateButton);
             button.setTag(i);
             button.setId(trackTemplate.getButtonId());
             button.setText(trackTemplate.getName());
@@ -102,12 +107,12 @@ public class MainActivity extends AppCompatActivity {
                     didTapMeditationButton(v);
                 }
             });
-            LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.buttonLinearLayout);
+            LinearLayout linearLayout = this.findViewById(R.id.buttonLinearLayout);
             LinearLayout parent = (LinearLayout) button.getParent();
             parent.removeView(button);
             linearLayout.addView(button);
             if (i < trackCount - 1) {
-                ImageView dots = (ImageView) v.findViewById(R.id.templateDots);
+                ImageView dots = v.findViewById(R.id.templateDots);
                 dots.setId(trackTemplate.getSpacerId());
                 parent.removeView(dots);
                 linearLayout.addView(dots);
