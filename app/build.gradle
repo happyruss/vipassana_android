@@ -6,8 +6,8 @@ android {
         applicationId "com.guidedmeditationtreks.vipassana"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 12
-        versionName "1.12"
+        versionCode 14
+        versionName "1.14"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
