@@ -11,7 +11,11 @@ Besides providing your own audio, and your own graphics, these are the only code
 2. Open it in Android Studio
 3. Dump your audio assets in the /app/src/main/res/raw folder (use ogg files; you can have 1 or 2 parts for each meditation... see below for details)
 
-3. Make modifications to TrackTemplateFactory.java like so:
+Change the namespaces everywhere
+===================
+You need to do a global find/replace for com.guidedmeditationtreks.vipassana and change it to your own namespace. Google requires that this be unique, and I've already got this namespace, so do something like com.yourcompany.yourapp
+
+Make modifications to TrackTemplateFactory.java like so:
 ======================
 ```
 public class TrackTemplateFactory {
