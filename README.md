@@ -54,7 +54,7 @@ Make modifications to strings.xml like so:
 
 ```
 
-4. Use your own images!!!
+Use your own images!!!
 =========================
   a. Drawable/LaunchLogo.jpg - use your own
   b. Mipmap/background.jpg - use your own!
