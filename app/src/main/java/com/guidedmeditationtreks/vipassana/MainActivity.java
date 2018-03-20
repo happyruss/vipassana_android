@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.guidedmeditationtreks.vipassana.managers.TrackTemplateFactory;
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton timerButton;
     private ImageButton infoButton;
     private TextView meditationTotalTimeTextView;
+
+    public  void didTapTimerButton(View v) {
+        presentAlerts(0);
+    }
+
 
     public  void didTapMeditationButton(View v) {
         int trackLevel = (int)v.getTag();
@@ -93,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             trackTemplate.setSpacerId(View.generateViewId());
 
             View v = LayoutInflater.from(this).inflate(R.layout.button_template, null);
-            Button button = (Button) v.findViewById(R.id.templateButton);
+            Button button = v.findViewById(R.id.templateButton);
             button.setTag(i);
             button.setId(trackTemplate.getButtonId());
             button.setText(trackTemplate.getName());
@@ -102,12 +110,12 @@ public class MainActivity extends AppCompatActivity {
                     didTapMeditationButton(v);
                 }
             });
-            LinearLayout linearLayout = (LinearLayout)this.findViewById(R.id.buttonLinearLayout);
+            LinearLayout linearLayout = this.findViewById(R.id.buttonLinearLayout);
             LinearLayout parent = (LinearLayout) button.getParent();
             parent.removeView(button);
             linearLayout.addView(button);
             if (i < trackCount - 1) {
-                ImageView dots = (ImageView) v.findViewById(R.id.templateDots);
+                ImageView dots = v.findViewById(R.id.templateDots);
                 dots.setId(trackTemplate.getSpacerId());
                 parent.removeView(dots);
                 linearLayout.addView(dots);
@@ -133,6 +141,36 @@ public class MainActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        autoScrollToMeditation();
+    }
+
+    private void autoScrollToMeditation() {
+
+        int scrollToBottomOfTrack = vipassanaManager.getUserCompletedTrackLevel();
+        if (scrollToBottomOfTrack > 0) {
+            final ScrollView scrollView = this.findViewById(R.id.mainScrollView);
+            final int scrollToBottomOfButtonId = trackTemplateFactory.getTrackTemplate(scrollToBottomOfTrack).getButtonId();
+            final LinearLayout linearLayout = this.findViewById(R.id.buttonLinearLayout);
+
+            linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        public void onGlobalLayout() {
+                            //Remove the listener before proceeding
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                linearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                linearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+                            final int scrollToY =  linearLayout.findViewById(scrollToBottomOfButtonId).getBottom();
+                            scrollView.post(new Runnable() {
+                                public void run() {
+                                    scrollView.scrollTo(0, scrollToY);
+                                }
+                            });
+                        }
+                    });
+        }
     }
 
     private void presentAlerts(final int trackLevel) {

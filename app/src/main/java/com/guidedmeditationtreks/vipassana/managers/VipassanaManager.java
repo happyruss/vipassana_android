@@ -21,6 +21,8 @@ public class VipassanaManager {
     private User user;
     private Track activeTrack;
     private int activeTrackLevel;
+    private Boolean isInMeditation;
+    private Boolean isTrackCompleted;
 
     private VipassanaManager() {
         this.user = new User();
@@ -54,6 +56,8 @@ public class VipassanaManager {
             activeTrack = null;
             activeTrackLevel = 0;
         }
+        isInMeditation = false;
+        isTrackCompleted = false;
     }
 
     public void userCompletedTrack() {
@@ -126,4 +130,19 @@ public class VipassanaManager {
         return activeTrack.getLongName();
     }
 
+    public Boolean getInMeditation() {
+        return isInMeditation;
+    }
+
+    public void setInMeditation(Boolean inMeditation) {
+        isInMeditation = inMeditation;
+    }
+
+    public Boolean getTrackCompleted() {
+        return isTrackCompleted;
+    }
+
+    public void setTrackCompleted(Boolean trackCompleted) {
+        isTrackCompleted = trackCompleted;
+    }
 }

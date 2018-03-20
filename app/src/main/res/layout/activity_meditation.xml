@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context="com.guidedmeditationtreks.vipassana.MeditationActivity"
     android:keepScreenOn="true"
+    android:background="@color/colorBlack"
     >
 
     <ImageView
@@ -76,7 +77,7 @@
         android:id="@+id/playPauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="75dp"
+        android:layout_margin="55dp"
         android:background="@drawable/button_custom"
         android:gravity="center"
         android:onClick="didTapPlayPause"

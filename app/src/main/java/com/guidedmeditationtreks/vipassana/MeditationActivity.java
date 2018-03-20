@@ -42,15 +42,21 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         setContentView(R.layout.activity_meditation);
         vipassanaManager.setDelegate(this);
         connectView();
-        Intent intent = getIntent();
-        int gapAmount =  intent.getIntExtra("gapAmount", 0);
-        vipassanaManager.playActiveTrackFromBeginning(gapAmount);
-        isInMeditation = true;
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        if (!vipassanaManager.getInMeditation()) { //workaround for screen rotation
+            Intent intent = getIntent();
+            int gapAmount =  intent.getIntExtra("gapAmount", 0);
+            vipassanaManager.playActiveTrackFromBeginning(gapAmount);
+            vipassanaManager.setInMeditation(true);
+        }
+        if (!vipassanaManager.getTrackCompleted()) {
+            isInMeditation = true;
+        }
     }
 
     private void closeActivity() {
@@ -124,7 +130,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     @Override
     public void trackTimeRemainingUpdated(int timeRemaining) {
         vipassanaManager.incrementTotalSecondsInMeditation();
-        String timeRemainingString = String.format(Locale.getDefault(), "%02d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
+        String timeRemainingString = String.format(Locale.getDefault(), "%01d:%02d", timeRemaining / 60, ((timeRemaining % 3600) % 60));
         timerTextView.setText(timeRemainingString);
     }
 
@@ -133,6 +139,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         vipassanaManager.userCompletedTrack();
         playPauseButton.setVisibility(View.INVISIBLE);
         isInMeditation = false;
+        vipassanaManager.setTrackCompleted(true);
     }
 
 
