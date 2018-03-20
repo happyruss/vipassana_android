@@ -56,11 +56,11 @@ Make modifications to strings.xml like so:
 
 Use your own images!!!
 =========================
-  a. Drawable/LaunchLogo.jpg - use your own
-  b. Mipmap/background.jpg - use your own!
-  c. gmt_logo_white.jpg - use your own logo!
-  d. ic_launcher.jpg - these are copyright, use your own!
-  e. buddha.png - this is the GMT logo, copyright! Use your own logo!
+  1. Drawable/LaunchLogo.jpg - use your own
+  2. Mipmap/background.jpg - use your own!
+  3. gmt_logo_white.jpg - use your own logo!
+  4. ic_launcher.jpg - these are copyright, use your own!
+  5. buddha.png - this is the GMT logo, copyright! Use your own logo!
 
 
 Please use your own graphics and intro screen!!!!
