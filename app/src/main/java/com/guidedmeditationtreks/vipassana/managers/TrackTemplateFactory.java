@@ -37,7 +37,7 @@ public class TrackTemplateFactory {
 
         trackTemplates[7] = new TrackTemplate( "Symmetrical Vispassana", "Symmetrical Vispassana",R.raw.symmetrical, R.raw.symmetrical2);
 
-        trackTemplates[8] = new TrackTemplate( "Sweeping Vispassana", "Sweeping Vispassana",R.raw.symmetrical, R.raw.symmetrical2);
+        trackTemplates[8] = new TrackTemplate( "Sweeping Vispassana", "Sweeping Vispassana",R.raw.sweeping, R.raw.sweeping2);
 
         trackTemplates[9] = new TrackTemplate(  "Piercing Vispassana", "In The Moment Vispassana", R.raw.inthemoment, R.raw.inthemoment2);
 
