@@ -56,6 +56,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         }
         if (!vipassanaManager.getTrackCompleted()) {
             isInMeditation = true;
+            vipassanaManager.userStartedTrack();
         }
     }
 
@@ -140,6 +141,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         playPauseButton.setVisibility(View.INVISIBLE);
         isInMeditation = false;
         vipassanaManager.setTrackCompleted(true);
+        closeActivity();
     }
 
 
