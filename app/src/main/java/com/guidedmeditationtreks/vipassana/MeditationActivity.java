@@ -1,25 +1,20 @@
 package com.guidedmeditationtreks.vipassana;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
 
 import java.util.Locale;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MeditationActivity extends AppCompatActivity implements TrackDelegate {
 
@@ -32,25 +27,22 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     private View blackClickBackgroundView;
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meditation);
         vipassanaManager.setDelegate(this);
         connectView();
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
 
-        if (!vipassanaManager.getInMeditation()) { //workaround for screen rotation
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleBackNavigation();
+            }
+        });
+
+        if (!vipassanaManager.getInMeditation()) {
             Intent intent = getIntent();
-            int gapAmount =  intent.getIntExtra("gapAmount", 0);
+            int gapAmount = intent.getIntExtra("gapAmount", 0);
             vipassanaManager.playActiveTrackFromBeginning(gapAmount);
             vipassanaManager.setInMeditation(true);
         }
@@ -65,22 +57,20 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
         finish();
     }
 
-    @Override
-    public void onBackPressed()
-    {
+    private void handleBackNavigation() {
         if (isInMeditation) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle("Meditation Underway");
             alertDialogBuilder
                     .setMessage("Would you like to stop the current session?")
                     .setCancelable(false)
-                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
                             closeActivity();
                         }
                     })
-                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                         }
                     });
@@ -92,7 +82,7 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     }
 
     public void didTapBackButton(View v) {
-        this.onBackPressed();
+        handleBackNavigation();
     }
 
     private void connectView() {

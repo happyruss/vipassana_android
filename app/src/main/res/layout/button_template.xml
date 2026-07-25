@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@drawable/rounded_button"
-        fontPath="fonts/font-diner-coffee-service.otf"
+        android:fontFamily="@font/font_diner_coffee_service"
         android:textColor="@color/colorTitle"
         android:layout_marginBottom="10dp"
         android:textSize="25dp"

@@ -5,16 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,14 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.guidedmeditationtreks.vipassana.managers.TrackTemplateFactory;
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 import com.guidedmeditationtreks.vipassana.models.TrackTemplate;
 
 import java.util.Locale;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton timerButton;
     private ImageButton infoButton;
     private TextView meditationTotalTimeTextView;
+
+    private final ActivityResultLauncher<Intent> meditationActivityLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> secureButtons());
 
     public  void didTapTimerButton(View v) {
         presentAlerts(0);
@@ -124,23 +125,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         connectView();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         vipassanaManager.setSettings(settings);
         this.secureButtons();
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/sf-pro-text-semibold.otf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
 
         autoScrollToMeditation();
     }
@@ -156,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(
                     new ViewTreeObserver.OnGlobalLayoutListener() {
                         public void onGlobalLayout() {
-                            //Remove the listener before proceeding
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                 linearLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             } else {
@@ -283,22 +273,10 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private static final int MEDITATION_ACTIVITY_REQUEST_CODE = 0xe110;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == MEDITATION_ACTIVITY_REQUEST_CODE)
-            secureButtons();
-    }
-
     private void runMeditationWithGap(int gapAmount) {
         Intent myIntent = new Intent(MainActivity.this, MeditationActivity.class);
         myIntent.putExtra("gapAmount", gapAmount);
-//        MainActivity.this.startActivity(myIntent);
-        startActivityForResult(myIntent, MEDITATION_ACTIVITY_REQUEST_CODE);
+        meditationActivityLauncher.launch(myIntent);
     }
 
     private void runMeditationWithFullLength(int fullLengthSeconds) {
