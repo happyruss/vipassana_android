@@ -12,3 +12,4 @@ keystore.properties
 /app/release
 Gemfile.lock
 fastlane/report.xml
+fastlane/README.md
