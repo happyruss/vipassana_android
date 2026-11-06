@@ -18,6 +18,14 @@ def sync_store_listing_from_hub!
   sh(script)
 end
 
+def gradle_version_code
+  gradle_file = File.expand_path("../app/build.gradle", __dir__)
+  match = File.read(gradle_file)[/versionCode\s+(\d+)/, 1]
+  UI.user_error!("Could not read versionCode from app/build.gradle") unless match
+
+  match.to_i
+end
+
 platform :android do
   desc "Sync hub listing and upload Play metadata (no AAB, no screenshots)"
   lane :upload_listing do
@@ -32,7 +40,9 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_upload_changelogs: true
+      skip_upload_changelogs: true,
+      track: "internal",
+      version_code: gradle_version_code
     )
   end
 
