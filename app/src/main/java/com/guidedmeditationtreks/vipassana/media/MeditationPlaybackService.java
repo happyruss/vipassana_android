@@ -31,7 +31,7 @@ public class MeditationPlaybackService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
-            stopForeground(true);
+            stopPlaybackForeground();
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -48,6 +48,15 @@ public class MeditationPlaybackService extends Service {
             startForeground(NOTIFICATION_ID, notification);
         }
         return START_STICKY;
+    }
+
+    @SuppressWarnings("deprecation")
+    private void stopPlaybackForeground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE);
+        } else {
+            stopForeground(true);
+        }
     }
 
     private Notification buildNotification(String title) {

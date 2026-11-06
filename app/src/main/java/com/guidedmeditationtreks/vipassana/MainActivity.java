@@ -127,7 +127,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(getWindow());
         setContentView(R.layout.activity_main);
+        EdgeToEdge.applySystemBarPadding(findViewById(R.id.mainRoot));
         connectView();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         vipassanaManager.setSettings(settings);

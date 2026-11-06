@@ -6,7 +6,6 @@
         <item name="colorAccent">@color/colorGrey</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@drawable/launch_screen</item>
-        <item name="android:fontFamily">@font/sf_pro_text_semibold</item>
     </style>
 
 </resources>
