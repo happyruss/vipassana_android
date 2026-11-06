@@ -1,15 +1,22 @@
 package com.guidedmeditationtreks.vipassana;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.guidedmeditationtreks.vipassana.managers.VipassanaManager;
 import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
@@ -25,11 +32,19 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
     private VipassanaManager vipassanaManager = VipassanaManager.singleton;
     private View clearClickBackgroundView;
     private View blackClickBackgroundView;
+    private static final String POST_NOTIFICATIONS_REQUESTED = "postNotificationsRequested";
+
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                recordNotificationRequestFinished();
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(getWindow());
         setContentView(R.layout.activity_meditation);
+        EdgeToEdge.applySystemBarPadding(findViewById(R.id.meditationRoot));
         vipassanaManager.setDelegate(this);
         connectView();
 
@@ -40,16 +55,43 @@ public class MeditationActivity extends AppCompatActivity implements TrackDelega
             }
         });
 
-        if (!vipassanaManager.getInMeditation()) {
+        boolean notificationsGranted = hasPostNotificationsPermission();
+        if (!Boolean.TRUE.equals(vipassanaManager.getInMeditation())) {
             Intent intent = getIntent();
             int gapAmount = intent.getIntExtra("gapAmount", 0);
-            vipassanaManager.playActiveTrackFromBeginning(gapAmount);
-            vipassanaManager.setInMeditation(true);
+            if (SessionNotificationPolicy.shouldStartPlayback(notificationsGranted)) {
+                vipassanaManager.playActiveTrackFromBeginning(gapAmount);
+                vipassanaManager.setInMeditation(true);
+            }
         }
-        if (!vipassanaManager.getTrackCompleted()) {
+        requestPostNotificationsOnce(notificationsGranted);
+        if (!Boolean.TRUE.equals(vipassanaManager.getTrackCompleted())) {
             isInMeditation = true;
             vipassanaManager.userStartedTrack();
         }
+    }
+
+    private boolean hasPostNotificationsPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPostNotificationsOnce(boolean granted) {
+        SharedPreferences preferences = getSharedPreferences(MainActivity.PREFS_NAME, MODE_PRIVATE);
+        boolean sheetReturned = preferences.getBoolean(POST_NOTIFICATIONS_REQUESTED, false);
+        if (SessionNotificationPolicy.shouldRequestPostNotifications(Build.VERSION.SDK_INT, granted, sheetReturned)) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
+    }
+
+    private void recordNotificationRequestFinished() {
+        if (!SessionNotificationPolicy.shouldMarkNotificationRequestComplete(true)) {
+            return;
+        }
+        getSharedPreferences(MainActivity.PREFS_NAME, MODE_PRIVATE)
+                .edit()
+                .putBoolean(POST_NOTIFICATIONS_REQUESTED, true)
+                .apply();
     }
 
     private void closeActivity() {
