@@ -74,3 +74,18 @@ Feel free to use any of this code as you see fit, but ....
 
 Failure to respect my copyrights, logos, or designs will result in bad karma!
 =============================================================================
+
+## Store updates (Fastlane)
+
+Sibling repo: `meditation-treks`. Listing copy: `docs/store/copy/vipassana/`.
+
+```bash
+bundle install
+bundle exec fastlane upload_listing   # Play listing text only
+bundle exec fastlane beta             # internal testing track
+bundle exec fastlane release          # production — only when ready
+```
+
+Orchestrated beta ship from the hub: `meditation-treks/scripts/ship-beta-vipassana.sh`.
+
+Requires local `app/src/main/res/raw/` audio, `keystore.properties`, and `~/.playstore/service-account.json`.

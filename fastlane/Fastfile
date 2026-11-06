@@ -1,0 +1,84 @@
+# frozen_string_literal: true
+
+default_platform(:android)
+
+PLAY_STORE_DIR = File.expand_path("~/.playstore")
+PLAY_STORE_JSON_KEY = ENV.fetch("PLAY_STORE_JSON_KEY", File.join(PLAY_STORE_DIR, "service-account.json"))
+
+def play_store_credentials_present?
+  File.exist?(PLAY_STORE_JSON_KEY)
+end
+
+def sync_store_listing_from_hub!
+  script = File.expand_path("../../meditation-treks/scripts/sync-fastlane-listing-vipassana.sh", __dir__)
+  unless File.exist?(script)
+    UI.user_error!("Missing sync script at #{script} — clone meditation-treks alongside vipassana_android.")
+  end
+
+  sh(script)
+end
+
+platform :android do
+  desc "Sync hub listing and upload Play metadata (no AAB, no screenshots)"
+  lane :upload_listing do
+    sync_store_listing_from_hub!
+
+    UI.user_error!("Missing Play credentials at #{PLAY_STORE_JSON_KEY}") unless play_store_credentials_present?
+
+    upload_to_play_store(
+      json_key: PLAY_STORE_JSON_KEY,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+
+  desc "Run checks, build release AAB, and upload to Play internal testing"
+  lane :beta do
+    sh("../scripts/check.sh")
+
+    unless File.exist?(File.expand_path("../keystore.properties", __dir__))
+      UI.user_error!(
+        "Missing keystore.properties — copy keystore.properties.example and point storeFile at your upload keystore."
+      )
+    end
+
+    gradle(task: "bundle", build_type: "Release")
+    upload_release_to_track("internal")
+  end
+
+  desc "Upload existing release AAB to Play internal testing (no rebuild)"
+  lane :upload_release do
+    upload_release_to_track("internal")
+  end
+
+  desc "Build release AAB and publish to Play production"
+  lane :release do
+    unless File.exist?(File.expand_path("../keystore.properties", __dir__))
+      UI.user_error!(
+        "Missing keystore.properties — copy keystore.properties.example and point storeFile at your upload keystore."
+      )
+    end
+
+    aab_path = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH] ||
+               File.expand_path("../app/build/outputs/bundle/release/app-release.aab", __dir__)
+    unless File.exist?(aab_path)
+      gradle(task: "bundle", build_type: "Release")
+    end
+
+    upload_release_to_track("production")
+  end
+
+  private_lane :upload_release_to_track do |track|
+    UI.user_error!("Missing Play credentials at #{PLAY_STORE_JSON_KEY}") unless play_store_credentials_present?
+
+    aab_path = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH] ||
+               File.expand_path("../app/build/outputs/bundle/release/app-release.aab", __dir__)
+    UI.user_error!("Missing release AAB at #{aab_path}") unless File.exist?(aab_path)
+
+    sh("bundle", "exec", "ruby", File.expand_path("../scripts/upload-play-release.rb", __dir__), aab_path, "--track=#{track}")
+  end
+end

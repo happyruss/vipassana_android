@@ -1,0 +1,1 @@
+Version 1.5: targets current Android requirements, refreshed listing copy, HTTPS support link, and reliable background playback during sessions.
