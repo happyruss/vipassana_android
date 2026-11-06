@@ -47,12 +47,12 @@ platform :android do
     end
 
     gradle(task: "bundle", build_type: "Release")
-    upload_release_to_track("internal")
+    upload_release_to_track(track: "internal")
   end
 
   desc "Upload existing release AAB to Play internal testing (no rebuild)"
   lane :upload_release do
-    upload_release_to_track("internal")
+    upload_release_to_track(track: "internal")
   end
 
   desc "Build release AAB and publish to Play production"
@@ -69,10 +69,11 @@ platform :android do
       gradle(task: "bundle", build_type: "Release")
     end
 
-    upload_release_to_track("production")
+    upload_release_to_track(track: "production")
   end
 
-  private_lane :upload_release_to_track do |track|
+  private_lane :upload_release_to_track do |options|
+    track = options[:track] || "internal"
     UI.user_error!("Missing Play credentials at #{PLAY_STORE_JSON_KEY}") unless play_store_credentials_present?
 
     aab_path = lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH] ||
