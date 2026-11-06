@@ -10,3 +10,5 @@
 app/src/main/res/raw
 keystore.properties
 /app/release
+Gemfile.lock
+fastlane/report.xml
