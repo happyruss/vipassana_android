@@ -1,7 +1,12 @@
 package com.guidedmeditationtreks.vipassana.managers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+
+import androidx.core.content.ContextCompat;
+
+import com.guidedmeditationtreks.vipassana.media.MeditationPlaybackService;
 
 import com.guidedmeditationtreks.vipassana.models.Track;
 import com.guidedmeditationtreks.vipassana.models.TrackDelegate;
@@ -23,6 +28,7 @@ public class VipassanaManager {
     private int activeTrackLevel;
     private Boolean isInMeditation;
     private Boolean isTrackCompleted;
+    private Context appContext;
 
     private VipassanaManager() {
         this.user = new User();
@@ -39,9 +45,14 @@ public class VipassanaManager {
         return activeTrack.isMultiPart();
     }
 
+    public void attachApplicationContext(Context context) {
+        this.appContext = context.getApplicationContext();
+    }
+
     public void playActiveTrackFromBeginning(int gapDuration) {
         this.activeTrack.setGapDuration(gapDuration);
         this.activeTrack.playFromBeginning();
+        startPlaybackForegroundService();
     }
 
     public void pauseOrResume() {
@@ -58,6 +69,29 @@ public class VipassanaManager {
         }
         isInMeditation = false;
         isTrackCompleted = false;
+        stopPlaybackForegroundService();
+    }
+
+    private void startPlaybackForegroundService() {
+        if (appContext == null || activeTrack == null) {
+            return;
+        }
+        Intent intent = new Intent(appContext, MeditationPlaybackService.class);
+        intent.setAction(MeditationPlaybackService.ACTION_START);
+        String title = getActiveTrackLongName();
+        if (title != null) {
+            intent.putExtra(MeditationPlaybackService.EXTRA_TITLE, title);
+        }
+        ContextCompat.startForegroundService(appContext, intent);
+    }
+
+    private void stopPlaybackForegroundService() {
+        if (appContext == null) {
+            return;
+        }
+        Intent intent = new Intent(appContext, MeditationPlaybackService.class);
+        intent.setAction(MeditationPlaybackService.ACTION_STOP);
+        appContext.startService(intent);
     }
 
     private void setCompletedTrack() {

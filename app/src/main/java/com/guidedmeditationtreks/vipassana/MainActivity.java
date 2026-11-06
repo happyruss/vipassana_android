@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         connectView();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         vipassanaManager.setSettings(settings);
+        vipassanaManager.attachApplicationContext(this);
         this.secureButtons();
 
         autoScrollToMeditation();

@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Vipassana</string>
     <string name="meditation_name_placeholder">Meditation Name</string>
-    <string name="url">http://www.guidedmeditationtreks.com/vipassana.html</string>
+    <string name="url">https://meditationtreks.com/vipassana</string>
     <string name="totalTimePlaceholder">Total time spent in meditation</string>
     <string name="pickASession">Pick a session to Begin</string>
     <string name="background_image">background image</string>
     <string name="timer_button_description">silent timer button</string>
     <string name="back">Back</string>
     <string name="app_info_link">app info link</string>
+    <string name="notification_channel_meditation">Meditation playback</string>
+    <string name="notification_channel_meditation_desc">Shown while a guided session is playing</string>
+    <string name="notification_meditation_in_progress">Session in progress</string>
 </resources>
