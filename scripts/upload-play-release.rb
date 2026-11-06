@@ -55,10 +55,11 @@ rescue Google::Apis::ClientError => e
 
       The service account (#{email}) can upload to other apps in this project, but is not granted access to Vipassana in Play Console.
 
-      Fix: Play Console → Settings → API access → #{email} → Grant access → select Vipassana
-      (com.guidedmeditationtreks.vipassana) with permission to release to testing tracks (or Admin).
+      Fix: Play Console → Users and permissions → play-upload@meditation-treks.iam.gserviceaccount.com
+      → App permissions → add Vipassana (com.guidedmeditationtreks.vipassana)
+      with Release to testing tracks (or Release manager / Admin).
 
-      Or set PLAY_STORE_JSON_KEY to a JSON key for an account that already has Vipassana access.
+      The retired Settings → API access page is not used for new grants.
     MSG
   end
   raise
